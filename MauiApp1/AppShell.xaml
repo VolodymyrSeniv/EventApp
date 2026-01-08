@@ -4,11 +4,17 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:MauiApp1"
-    Title="MauiApp1">
+    Title="MauiApp1"
+    Shell.FlyoutBehavior="Flyout">
 
     <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
+    <ShellContent
+        Title="Govno"
+        ContentTemplate="{DataTemplate local:EventsPage}"
+        Route="EventsPage" />
+
 
 </Shell>
