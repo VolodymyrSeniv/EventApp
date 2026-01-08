@@ -16,18 +16,28 @@
     </ContentPage.Behaviors>
 
     <Grid ColumnDefinitions="*,*" ColumnSpacing="5" RowDefinitions="*, Auto">
-        <CollectionView Grid.ColumnSpan="2" ItemsSource="{Binding Events}" SelectionMode="None">
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="model:Event">
-                    <Border HeightRequest="98">
-                        <HorizontalStackLayout Padding="10">
-                            <Label Text="{Binding Title}"></Label>
-                            <Label Text="{Binding Date}"></Label>
-                        </HorizontalStackLayout>
-                    </Border>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+        <RefreshView Grid.ColumnSpan="2"
+                     Command="{Binding GetEventListCommand}"
+                     IsRefreshing="{Binding IsRefreshing}">
+            <CollectionView ItemsSource="{Binding Events}" SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:Event">
+                        <Grid Padding="10">
+                            <Border HeightRequest="90">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:EventListViewModel}}, Path=GetEventDetailsCommand}" 
+                                                          CommandParameter="{Binding .}"/>
+                                </Border.GestureRecognizers>
+                                <HorizontalStackLayout Padding="10" Spacing="5">
+                                    <Label Text="{Binding Title}"></Label>
+                                    <Label Text="{Binding Date}"></Label>
+                                </HorizontalStackLayout>
+                            </Border>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
     </Grid>
 
 </ContentPage>

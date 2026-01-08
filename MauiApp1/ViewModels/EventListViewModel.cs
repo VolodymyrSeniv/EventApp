@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Linq;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace MauiApp1.ViewModels
 {
@@ -17,9 +18,12 @@ namespace MauiApp1.ViewModels
         public ObservableCollection<Event> Events { get; private set; } = new();
         public EventListViewModel(EventService eventService) 
         {
-            Title = "Event List";
+            Title = "Events";
             this.eventService = eventService;
         }
+
+        [ObservableProperty]
+        bool isRefreshing;
 
         [RelayCommand]
         async Task GetEventList() 
@@ -43,6 +47,7 @@ namespace MauiApp1.ViewModels
             finally 
             {
                 IsLoading = false;
+                IsRefreshing = false;
             }
         }
     }
