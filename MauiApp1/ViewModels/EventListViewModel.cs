@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using MauiApp1.Models;
 using MauiApp1.Services;
+using MauiApp1.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -49,6 +50,15 @@ namespace MauiApp1.ViewModels
                 IsLoading = false;
                 IsRefreshing = false;
             }
+        }
+        [RelayCommand]
+        async Task GetEventDetails(Event eventik)
+        {
+            if (eventik == null) return;
+            await Shell.Current.GoToAsync($"{nameof(EventDetailPage)}", true, new Dictionary<string, object> {
+                {nameof(Event), eventik}
+            });
+            
         }
     }
 }
