@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using SQLite;
 
 namespace MauiApp1.Models
 {
+    [Table("events")]
     public class Event : BaseEntity
     {
         public string Title { get; set; }

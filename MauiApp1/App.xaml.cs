@@ -1,17 +1,20 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using MauiApp1.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MauiApp1
 {
     public partial class App : Application
     {
-        public App()
+        public static EventService EventService { get; private set; } 
+        public App(EventService eventService)
         {
             InitializeComponent();
+            MainPage = new AppShell();
+            EventService = eventService;
         }
-
         protected override Window CreateWindow(IActivationState? activationState)
         {
-            return new Window(new AppShell());
+            return base.CreateWindow(activationState);
         }
     }
 }

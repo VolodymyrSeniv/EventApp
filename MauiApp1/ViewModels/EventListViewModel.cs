@@ -15,12 +15,10 @@ namespace MauiApp1.ViewModels
 {
     public partial class EventListViewModel : BaseViewModel
     {
-        private readonly EventService eventService;
         public ObservableCollection<Event> Events { get; private set; } = new();
         public EventListViewModel(EventService eventService) 
         {
             Title = "Events";
-            this.eventService = eventService;
         }
 
         [ObservableProperty]
@@ -34,7 +32,7 @@ namespace MauiApp1.ViewModels
             {
                 IsLoading = true;
                 if (Events.Any()) Events.Clear();
-                var events = eventService.GetEvents();
+                var events = App.EventService.GetEvents();
                 foreach (var ev in events)
                 {
                     Events.Add(ev);
