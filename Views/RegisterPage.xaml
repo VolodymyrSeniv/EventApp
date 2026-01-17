@@ -1,0 +1,83 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             
+             xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
+             ios:Page.UseSafeArea="False"
+             
+             x:Class="MauiAppB.Views.RegisterPage"
+             NavigationPage.HasNavigationBar="False">
+
+    <Grid>
+        <Image Source="bg_main.png"
+               Aspect="AspectFill"
+               HorizontalOptions="Fill"
+               VerticalOptions="Fill"/>
+
+        <ScrollView>
+            <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto"
+                  Padding="20, 10, 20, 20"
+                  RowSpacing="20">
+
+                <ImageButton Grid.Row="0"
+                             Source="powrot.png"
+                             HorizontalOptions="Start" 
+                             VerticalOptions="Start"
+                             HeightRequest="40"  
+                             WidthRequest="40"
+                             Scale="0.5"
+                             BackgroundColor="Transparent"
+                             Clicked="OnBackClicked"
+                             Margin="-10, 0, 0, 0"/> 
+
+                    <Label Grid.Row="1"
+                       Text="Register"
+                       FontSize="40"
+                       TextColor="Black"
+                       FontAttributes="Bold"
+                       Margin="0, 10, 0, 20"/>
+
+                <VerticalStackLayout Grid.Row="2" Spacing="15">
+                    
+                    <Border Stroke="Black" StrokeThickness="1" StrokeShape="RoundRectangle 10" BackgroundColor="White" HeightRequest="55" Padding="15,0">
+                        <Entry x:Name="FirstNameEntry" Placeholder="First Name (e.g. Ola)" PlaceholderColor="Gray" TextColor="Black" VerticalOptions="Center"/>
+                    </Border>
+
+                    <Border Stroke="Black" StrokeThickness="1" StrokeShape="RoundRectangle 10" BackgroundColor="White" HeightRequest="55" Padding="15,0">
+                        <Entry x:Name="LastNameEntry" Placeholder="Last Name" PlaceholderColor="Gray" TextColor="Black" VerticalOptions="Center"/>
+                    </Border>
+
+                    <Border Stroke="Black" StrokeThickness="1" StrokeShape="RoundRectangle 10" BackgroundColor="White" HeightRequest="55" Padding="15,0">
+                        <Entry x:Name="UserNameEntry" Placeholder="Username" PlaceholderColor="Gray" TextColor="Black" VerticalOptions="Center"/>
+                    </Border>
+
+                    <Border Stroke="Black" StrokeThickness="1" StrokeShape="RoundRectangle 10" BackgroundColor="White" HeightRequest="55" Padding="15,0">
+                        <Entry x:Name="PhoneEntry" Placeholder="Phone Number" PlaceholderColor="Gray" TextColor="Black" VerticalOptions="Center" Keyboard="Telephone"/>
+                    </Border>
+
+                    <Border Stroke="Black" StrokeThickness="1" StrokeShape="RoundRectangle 10" BackgroundColor="White" HeightRequest="55" Padding="15,0">
+                        <Entry x:Name="EmailEntry" Placeholder="Email" PlaceholderColor="Gray" TextColor="Black" VerticalOptions="Center" Keyboard="Email"/>
+                    </Border>
+
+                    <Border Stroke="Black" StrokeThickness="1" StrokeShape="RoundRectangle 10" BackgroundColor="White" HeightRequest="55" Padding="15,0">
+                        <Entry x:Name="PasswordEntry" Placeholder="Password" PlaceholderColor="Gray" TextColor="Black" IsPassword="True" VerticalOptions="Center"/>
+                    </Border>
+
+                    <Button 
+                        Text="Next"
+                        BackgroundColor="Transparent" 
+                        TextColor="Black"
+                        BorderColor="Black"
+                        BorderWidth="1"
+                        FontAttributes="Bold"
+                        CornerRadius="25"
+                        HeightRequest="40"
+                        WidthRequest="150"
+                        HorizontalOptions="Center"
+                        Margin="0, 20, 0, 0"
+                        Clicked="OnNextClicked"/>
+
+                </VerticalStackLayout>
+            </Grid>
+        </ScrollView>
+    </Grid>
+</ContentPage>

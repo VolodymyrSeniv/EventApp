@@ -1,0 +1,62 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:MauiAppB.Models"
+             
+             xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
+             ios:Page.UseSafeArea="False"
+             
+             x:Class="MauiAppB.Views.GroupsPage"
+             NavigationPage.HasNavigationBar="False">
+
+    <Grid>
+        <Image Source="bg_main.png" Aspect="AspectFill" HorizontalOptions="Fill" VerticalOptions="Fill"/>
+
+        <Grid RowDefinitions="Auto, Auto, *">
+            
+            <Label Grid.Row="0" Text="Your groups" 
+                   FontSize="40" FontAttributes="None" TextColor="Black"
+                   Margin="20, 60, 20, 5"/>
+
+            <Border Grid.Row="1" Stroke="Black" StrokeThickness="1" StrokeShape="RoundRectangle 8"
+                    BackgroundColor="White" HeightRequest="50" Margin="20, 0, 20, 15" Padding="10,0">
+                <Entry Placeholder="Search" PlaceholderColor="Gray" TextColor="Black" VerticalOptions="Center"/>
+            </Border>
+
+            <CollectionView Grid.Row="2" x:Name="GroupsCollection"
+                            ItemsSource="{Binding Groups}" 
+                            SelectionMode="Single"
+                            SelectionChanged="OnGroupSelected">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Group">
+                        
+                        <Border Margin="0, 0, 0, 1" 
+                                Padding="15, 10" 
+                                StrokeThickness="0"
+                                BackgroundColor="#40FFFFFF"> <Grid ColumnDefinitions="Auto, *">
+                                <Frame Grid.Column="0" HeightRequest="50" WidthRequest="50" CornerRadius="25" Padding="0" IsClippedToBounds="True" BorderColor="Transparent">
+                                    <Image Source="{Binding PhotoUrl}" Aspect="AspectFill"/>
+                                </Frame>
+
+                                <Label Grid.Column="1" 
+                                       Text="{Binding Name}" 
+                                       FontSize="20" 
+                                       FontAttributes="Bold" 
+                                       TextColor="Black"
+                                       VerticalOptions="Center"
+                                       Margin="15, 0, 0, 0"/>
+                            </Grid>
+                        </Border>
+
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+
+        <VerticalStackLayout VerticalOptions="End" HorizontalOptions="End" Spacing="15" Padding="20, 50">
+            <Frame HeightRequest="50" WidthRequest="50" CornerRadius="25" Padding="0" HasShadow="True"><ImageButton Source="profil.png" Padding="12" Clicked="OnProfileClicked"/></Frame>
+            <Frame HeightRequest="50" WidthRequest="50" CornerRadius="25" Padding="0" HasShadow="True"><ImageButton Source="poszukiwanie.png" Padding="12"/></Frame>
+            <Frame HeightRequest="60" WidthRequest="60" CornerRadius="30" Padding="0" HasShadow="True"><ImageButton Source="plus.png" Padding="15"/></Frame>
+        </VerticalStackLayout>
+
+    </Grid>
+</ContentPage>

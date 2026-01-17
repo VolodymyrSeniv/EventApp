@@ -1,0 +1,132 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:MauiAppB.Models"
+             xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
+             ios:Page.UseSafeArea="False"
+             x:Class="MauiAppB.Views.GroupDetailsPage"
+             NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <x:Boolean x:Key="True">True</x:Boolean>
+            <x:Boolean x:Key="False">False</x:Boolean>
+            <models:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid>
+        <Image Source="bg_main.png" Aspect="AspectFill" HorizontalOptions="Fill" VerticalOptions="Fill"/>
+
+        <Grid RowDefinitions="Auto, Auto, *">
+            
+            <Grid Grid.Row="0" Margin="20, 45, 20, 0" HeightRequest="40">
+                <ImageButton Source="powrot.png" HorizontalOptions="Start" VerticalOptions="Center" HeightRequest="40"  
+                             WidthRequest="40"
+                             Scale="0.5"
+                             BackgroundColor="Transparent"
+                             Clicked="OnBackClicked"
+                             Margin="-10, 0, 0, 0"/>
+            </Grid>
+
+            <Grid Grid.Row="1" ColumnDefinitions="*,*,*,*,*" Margin="0, 10, 0, 15" Padding="10,0">
+                <VerticalStackLayout Grid.Column="0" Spacing="2" HorizontalOptions="Center">
+                    <VerticalStackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnTabClicked" CommandParameter="Photos"/>
+                    </VerticalStackLayout.GestureRecognizers>
+                    <Label x:Name="LblPhotos" Text="Zdjęcia" FontSize="14" FontAttributes="Bold" TextColor="Black" Opacity="0.5" HorizontalOptions="Center"/>
+                    <BoxView x:Name="LinePhotos" HeightRequest="2" Color="Black" WidthRequest="40" IsVisible="False" HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="1" Spacing="2" HorizontalOptions="Center">
+                    <VerticalStackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnTabClicked" CommandParameter="Videos"/>
+                    </VerticalStackLayout.GestureRecognizers>
+                    <Label x:Name="LblVideos" Text="Filmiki" FontSize="14" FontAttributes="Bold" TextColor="Black" Opacity="0.5" HorizontalOptions="Center"/>
+                    <BoxView x:Name="LineVideos" HeightRequest="2" Color="Black" WidthRequest="40" IsVisible="False" HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+                
+                <VerticalStackLayout Grid.Column="2" Spacing="2" HorizontalOptions="Center">
+                    <VerticalStackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnTabClicked" CommandParameter="Events"/>
+                    </VerticalStackLayout.GestureRecognizers>
+                    <Label x:Name="LblEvents" Text="Events" FontSize="14" FontAttributes="Bold" TextColor="Black" Opacity="1.0" HorizontalOptions="Center"/>
+                    <BoxView x:Name="LineEvents" HeightRequest="2" Color="Black" WidthRequest="40" IsVisible="True" HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+                
+                <VerticalStackLayout Grid.Column="3" Spacing="2" HorizontalOptions="Center">
+                    <VerticalStackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnTabClicked" CommandParameter="Links"/>
+                    </VerticalStackLayout.GestureRecognizers>
+                    <Label x:Name="LblLinks" Text="Linki" FontSize="14" FontAttributes="Bold" TextColor="Black" Opacity="0.5" HorizontalOptions="Center"/>
+                    <BoxView x:Name="LineLinks" HeightRequest="2" Color="Black" WidthRequest="40" IsVisible="False" HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="4" Spacing="2" HorizontalOptions="Center">
+                    <VerticalStackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnTabClicked" CommandParameter="Files"/>
+                    </VerticalStackLayout.GestureRecognizers>
+                    <Label x:Name="LblFiles" Text="Pliki" FontSize="14" FontAttributes="Bold" TextColor="Black" Opacity="0.5" HorizontalOptions="Center"/>
+                    <BoxView x:Name="LineFiles" HeightRequest="2" Color="Black" WidthRequest="40" IsVisible="False" HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+            </Grid>
+
+            <Grid Grid.Row="2">
+                
+                <CollectionView x:Name="EventsCollection" 
+                                IsVisible="True" 
+                                ItemsSource="{Binding Events}"
+                                SelectionMode="Single"
+                                SelectionChanged="OnEventSelected">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Event">
+                            <Border Margin="15, 0, 15, 15" Padding="0" StrokeThickness="0" StrokeShape="RoundRectangle 15" BackgroundColor="#95FFFFFF">
+                                <VerticalStackLayout Padding="15" Spacing="8">
+                                    
+                                    <Frame CornerRadius="10" Padding="0" IsClippedToBounds="True" HeightRequest="180" BorderColor="Transparent" BackgroundColor="#E0E0E0">
+                                        <Image Source="{Binding ImageUrl}" Aspect="AspectFill"/>
+                                    </Frame>
+
+                                    <Grid ColumnDefinitions="*, Auto" Margin="0, 5, 0, 0">
+                                        <HorizontalStackLayout Grid.Column="0" Spacing="5" VerticalOptions="Center">
+                                            <Label Text="{Binding Name}" FontSize="18" FontAttributes="Bold" TextColor="Black"/>
+                                            <Label Text="●" FontSize="12" TextColor="Black" VerticalOptions="Center"/>
+                                        </HorizontalStackLayout>
+                                        <HorizontalStackLayout Grid.Column="1" Spacing="5" VerticalOptions="Center">
+                                            <Label Text="🕒" FontSize="14" TextColor="Gray" VerticalOptions="Center"/> 
+                                            <Label Text="{Binding Time}" FontSize="14" TextColor="Black"/>
+                                        </HorizontalStackLayout>
+                                    </Grid>
+
+                                    <Label Text="{Binding Description}" FontSize="14" TextColor="#333333"/>
+
+                                    <Grid ColumnDefinitions="*, *" ColumnSpacing="15" Margin="0, 10, 0, 5" IsVisible="{Binding IsActionButtonsVisible}">
+                                        <Button Grid.Column="0" Text="Będę" BackgroundColor="#D0D0D0" TextColor="Black" FontAttributes="Bold" CornerRadius="20" HeightRequest="40" Padding="0" Clicked="OnDecisionClicked"/>
+                                        <Button Grid.Column="1" Text="Nie będę" BackgroundColor="#D0D0D0" TextColor="Black" FontAttributes="Bold" CornerRadius="20" HeightRequest="40" Padding="0" Clicked="OnDecisionClicked"/>
+                                    </Grid>
+
+                                    <VerticalStackLayout IsVisible="{Binding IsActionButtonsVisible, Converter={x:StaticResource InvertedBoolConverter}}" Spacing="10" HorizontalOptions="Center" Margin="0, 10, 0, 5">
+                                        <Label Text="Twoja odpowiedź została zapisana" TextColor="Gray" FontSize="12" HorizontalOptions="Center"/>
+                                        <Button Text="Zmień" 
+                                                BackgroundColor="#E0E0E0" 
+                                                TextColor="Black" 
+                                                CornerRadius="20" 
+                                                HeightRequest="35" 
+                                                WidthRequest="120"
+                                                FontSize="12"
+                                                Padding="0" 
+                                                Clicked="OnChangeDecisionClicked"/>
+                                    </VerticalStackLayout>
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <VerticalStackLayout x:Name="OtherContent" IsVisible="False" VerticalOptions="Center" HorizontalOptions="Center">
+                    <Label Text="Tu nic nie ma" FontSize="20" TextColor="Gray"/>
+                </VerticalStackLayout>
+
+            </Grid>
+        </Grid>
+    </Grid>
+</ContentPage>
