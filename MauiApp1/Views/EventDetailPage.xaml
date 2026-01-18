@@ -25,7 +25,7 @@
                 </Border.Shadow>
 
                 <VerticalStackLayout Spacing="15">
-                    <Label Text="{Binding Event.Title}"
+                    <Label Text="{Binding Eventik.Title}"
                            FontSize="28"
                            FontAttributes="Bold"
                            TextColor="{StaticResource Primary}" />
