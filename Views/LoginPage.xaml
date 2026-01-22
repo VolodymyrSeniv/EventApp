@@ -12,19 +12,27 @@
 
         <ScrollView>
             <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto"
-                  Padding="20, 10, 20, 20"
+                  Padding="20, 30, 20, 20"
                   RowSpacing="20">
-
+                 <Frame Grid.Column="0" 
+                    HeightRequest="40" 
+                    WidthRequest="40" 
+                    CornerRadius="20" 
+                    Padding="0" 
+                    BackgroundColor="#80FFFFFF"
+                    BorderColor="Transparent" 
+                    HasShadow="False"
+                    HorizontalOptions="Start">
                 <ImageButton Grid.Row="0"
                              Source="powrot.png"
                              HorizontalOptions="Start"
                              HeightRequest="40"  
                              WidthRequest="40"
-                             Scale="0.5"
+                             Padding="10"
                              BackgroundColor="Transparent"
                              Clicked="OnBackClicked"
-                             Margin="-10, 0, 0, 0"/>
-
+                             Margin="-5, 0, 0, 0"/>
+                </Frame>
                 <Label Grid.Row="1"
                     Text="Log In"
                        FontSize="40"

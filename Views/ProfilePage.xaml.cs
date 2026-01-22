@@ -40,4 +40,41 @@ public partial class ProfilePage : ContentPage
             await Navigation.PushAsync(new EditProfilePage(currentUser));
         }
     }
+    private async void OnCreateEventClicked(object sender, EventArgs e)
+    {
+        // Переход на страницу создания
+        await Navigation.PushAsync(new CreateEventPage());
+    }
+    private void OnSettingsClicked(object sender, EventArgs e)
+    {
+        SettingsOverlay.IsVisible = true;
+    }
+
+    // Закрыть меню (при клике на фон)
+    private void OnCloseSettingsClicked(object sender, EventArgs e)
+    {
+        SettingsOverlay.IsVisible = false;
+    }
+
+    // Удалить группу
+    private async void OnDeleteGroupClicked(object sender, EventArgs e)
+    {
+        bool answer = await DisplayAlert("Usuń grupę", "Czy na pewno?", "Tak", "Nie");
+        if (answer)
+        {
+            SettingsOverlay.IsVisible = false;
+            await Navigation.PopAsync(); // Уходим с страницы
+        }
+    }
+    private async void OnDeleteProfileClicked(object sender, EventArgs e)
+    {
+        // Используем await, чтобы убрать warning
+        bool answer = await DisplayAlert("Wyloguj", "Czy na pewno chcesz się wylogować?", "Tak", "Nie");
+        
+        if (answer)
+        {
+            SettingsOverlay.IsVisible = false;
+            await Navigation.PopAsync(); // Или логика выхода
+        }
+    }
 }

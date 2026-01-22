@@ -1,0 +1,49 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:MauiAppB.Models"
+             xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
+             ios:Page.UseSafeArea="False"
+             x:Class="MauiAppB.Views.CreateGroupPage"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="White">
+
+    <Grid RowDefinitions="Auto, *">
+        
+        <Grid Grid.Row="0" Margin="20, 45, 20, 0" HeightRequest="40">
+            <Frame Grid.Column="0" 
+                    HeightRequest="40" 
+                    WidthRequest="40" 
+                    CornerRadius="20" 
+                    Padding="0" 
+                    BackgroundColor="#80FFFFFF"
+                    BorderColor="Transparent" 
+                    HasShadow="False"
+                    HorizontalOptions="Start">
+                <ImageButton Source="powrot.png" 
+                         HorizontalOptions="Start" 
+                         VerticalOptions="Center" 
+                         HeightRequest="40"  
+                         WidthRequest="40"
+                         Padding="10"
+                         BackgroundColor="Transparent"
+                         Clicked="OnBackClicked"
+                         Margin="-10, 0, 0, 0"/>
+            </Frame>
+        </Grid>
+
+        <VerticalStackLayout Grid.Row="1" VerticalOptions="Center" HorizontalOptions="Center" Spacing="20">
+            
+            <Label Text="Stwórz nową grupę" 
+                   FontSize="24" 
+                   TextColor="Black" 
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"/>
+            
+            <Label Text="Тут будет форма создания" 
+                   TextColor="Gray" 
+                   HorizontalOptions="Center"/>
+
+        </VerticalStackLayout>
+
+    </Grid>
+</ContentPage>

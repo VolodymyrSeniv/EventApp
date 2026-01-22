@@ -11,9 +11,25 @@
         <Grid RowDefinitions="Auto, *">
             
             <Grid Grid.Row="0" HeightRequest="50" Margin="20, 50, 20, 0">
-                <Frame HorizontalOptions="Start" HeightRequest="40" WidthRequest="40" CornerRadius="20" Padding="0" BackgroundColor="#80FFFFFF" BorderColor="Transparent" HasShadow="False">
-                    <ImageButton Source="powrot.png" Padding="12" Clicked="OnBackClicked"/>
-                </Frame>
+                <Frame Grid.Column="0" 
+                    HeightRequest="40" 
+                    WidthRequest="40" 
+                    CornerRadius="20" 
+                    Padding="0" 
+                    BackgroundColor="#80FFFFFF"
+                    BorderColor="Transparent" 
+                    HasShadow="False"
+                    HorizontalOptions="Start">
+                <ImageButton Source="powrot.png" 
+                         HorizontalOptions="Start" 
+                         VerticalOptions="Center" 
+                         HeightRequest="40"  
+                         WidthRequest="40"
+                         Padding="10"
+                         BackgroundColor="Transparent"
+                         Clicked="OnBackClicked"
+                         Margin="-5, 0, 0, 0"/>
+            </Frame>
                 <Label Text="Edycja profilu" FontSize="20" FontAttributes="Bold" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center"/>
             </Grid>
 

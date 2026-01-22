@@ -19,8 +19,8 @@ public class MockDataService : IDataService
             Id = 1,
             Name = "Coursework Submission",
             Description = "Celebrating project submission!",
-            Date = DateTime.Now.AddDays(10),
-            Time = "Friday 18:00", // Added Time for design
+            Date = "Friday 18:00",            
+
             ImageUrl = "free.png", 
             Participants = new List<User> { me, friend },
             IsActionButtonsVisible = true

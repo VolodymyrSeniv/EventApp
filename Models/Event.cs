@@ -11,7 +11,7 @@ public class Event : INotifyPropertyChanged
     public string Description { get; set; }
     public string ImageUrl { get; set; }
     public string Time { get; set; }
-    public DateTime Date { get; set; }
+   public string Date { get; set; }
     public List<User> Participants { get; set; } = new();
 
     // === 1. ЛОГИКА СПИСКА (Кнопки "Będę/Nie będę") ===

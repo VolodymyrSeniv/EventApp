@@ -85,16 +85,25 @@
         </ScrollView>
 
         <Grid VerticalOptions="Start" HeightRequest="50" Margin="20, 50, 20, 0" ZIndex="99">
-            <Frame HorizontalOptions="Start" HeightRequest="40" WidthRequest="40" CornerRadius="20" Padding="0" BackgroundColor="#80000000" BorderColor="Transparent" InputTransparent="False">
+             <Frame Grid.Column="0" 
+                    HeightRequest="40" 
+                    WidthRequest="40" 
+                    CornerRadius="20" 
+                    Padding="0" 
+                    BackgroundColor="#80FFFFFF"
+                    BorderColor="Transparent" 
+                    HasShadow="False"
+                    HorizontalOptions="Start">
+
                 <ImageButton Source="powrot.png" 
                              HorizontalOptions="Start" 
                              VerticalOptions="Center"
                              HeightRequest="40"  
                              WidthRequest="40"
-                             Scale="0.5"
+                             Padding="10"
                              BackgroundColor="Transparent"
                              Clicked="OnBackClicked"
-                             Margin="-10, 0, 0, 0"/>
+                             Margin="-5, 0, 0, 0"/>
             </Frame>
             <Frame HorizontalOptions="End" HeightRequest="40" WidthRequest="40" CornerRadius="20" Padding="0" BackgroundColor="#80000000" BorderColor="Transparent" InputTransparent="False">
                 <Label Text="☰" HorizontalOptions="Center" VerticalOptions="Center" FontSize="20" TextColor="White"/> 

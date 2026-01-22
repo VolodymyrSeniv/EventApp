@@ -85,4 +85,8 @@ public partial class GroupsPage : ContentPage
          // Переход на страницу профиля
          await Navigation.PushAsync(new ProfilePage());
     }
+    private async void OnCreateGroupClicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new CreateGroupPage());
+    }
 }
