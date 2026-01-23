@@ -55,4 +55,23 @@ public partial class EventDetailsPage : ContentPage
         RbFoodYes.IsChecked = false;
         RbFoodLater.IsChecked = false;
     }
+    private void OnSettingsClicked(object sender, EventArgs e)
+    {
+        SettingsOverlay.IsVisible = true;
+    }
+    private void OnCloseSettingsClicked(object sender, EventArgs e)
+    {
+        SettingsOverlay.IsVisible = false;
+    }
+
+    // Удалить группу
+    private async void OnDeleteGroupClicked(object sender, EventArgs e)
+    {
+        bool answer = await DisplayAlert("Usuń wydarzenie", "Czy na pewno?", "Tak", "Nie");
+        if (answer)
+        {
+            SettingsOverlay.IsVisible = false;
+            await Navigation.PopAsync(); // Уходим с страницы
+        }
+    }
 }

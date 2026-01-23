@@ -13,7 +13,18 @@ public partial class GroupDetailsPage : ContentPage
        Events = new ObservableCollection<Event>(group.Events);
         if (Events.Count == 0) 
         {
-             // LoadFakeEvents(); // Only if needed
+             LoadFakeEvents(); // Only if needed
+        }
+        else
+        {
+            // Пробегаем по всем событиям и добавляем локацию, если её нет
+            foreach (var evt in Events)
+            {
+                if (string.IsNullOrEmpty(evt.Location))
+                {
+                    evt.Location = "Warszawa, Centrum (Auto)";
+                }
+            }
         }
 
         BindingContext = this; 
@@ -35,6 +46,7 @@ public partial class GroupDetailsPage : ContentPage
             Name = "Kabacki Las",
             Description = "Wycieczka lasem",
             Time = "Piątek 18:00",
+            Location = "Warszawa, Kabaty",
             ImageUrl = "free.png",
             IsActionButtonsVisible = true
         });
@@ -43,6 +55,7 @@ public partial class GroupDetailsPage : ContentPage
             Name = "Zakopane",
             Description = "Góry i narty",
             Time = "Wtorek 10:00",
+            Location = "Warszawa, gfhgjk",
             ImageUrl = "free.png",
             IsActionButtonsVisible = false
         });

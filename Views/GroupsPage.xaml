@@ -54,7 +54,7 @@
 
         <VerticalStackLayout VerticalOptions="End" HorizontalOptions="End" Spacing="15" Padding="20, 50">
             <Frame HeightRequest="50" WidthRequest="50" CornerRadius="25" Padding="0" HasShadow="True"><ImageButton Source="profil.png" Padding="12" Clicked="OnProfileClicked"/></Frame>
-            <Frame HeightRequest="50" WidthRequest="50" CornerRadius="25" Padding="0" HasShadow="True"><ImageButton Source="poszukiwanie.png" Padding="12"/></Frame>
+            <!-- <Frame HeightRequest="50" WidthRequest="50" CornerRadius="25" Padding="0" HasShadow="True"><ImageButton Source="poszukiwanie.png" Padding="12"/></Frame> -->
             <Frame HeightRequest="60" WidthRequest="60" CornerRadius="30" Padding="0" HasShadow="True"><ImageButton Source="plus.png" Padding="15"
             Clicked="OnCreateGroupClicked"/></Frame>
         </VerticalStackLayout>

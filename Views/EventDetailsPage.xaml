@@ -35,7 +35,28 @@
                     
                     <VerticalStackLayout Spacing="20">
                         <Label Text="{Binding Name}" FontSize="32" FontAttributes="Bold" TextColor="Black"/>
-                        
+
+                        <Grid ColumnDefinitions="Auto, *" 
+                              RowDefinitions="Auto, Auto" 
+                              ColumnSpacing="10" 
+                              Margin="0, 5, 0, 5">
+                            
+                            <Label Grid.Row="0" Grid.Column="1" 
+                                   Text="Gdzie?" 
+                                   FontSize="12" 
+                                   TextColor="Gray"
+                                   Margin="0,0,0,-2"/> <Label Grid.Row="1" Grid.Column="0" 
+                                   Text="📍" 
+                                   FontSize="24" 
+                                   VerticalOptions="Center"
+                                   Margin="0, -5, 0, 0"/> <Label Grid.Row="1" Grid.Column="1" 
+                                   Text="{Binding Location}" 
+                                   FontSize="18" 
+                                   FontAttributes="Bold" 
+                                   TextColor="Black" 
+                                   VerticalOptions="Center"/>
+                        </Grid>
+
                         <BoxView HeightRequest="1" Color="#E0E0E0"/>
 
                         <VerticalStackLayout Spacing="5">
@@ -84,7 +105,7 @@
             </VerticalStackLayout>
         </ScrollView>
 
-        <Grid VerticalOptions="Start" HeightRequest="50" Margin="20, 50, 20, 0" ZIndex="99">
+        <Grid VerticalOptions="Start" HeightRequest="40" Margin="20, 15, 20, 0" ZIndex="99" >
              <Frame Grid.Column="0" 
                     HeightRequest="40" 
                     WidthRequest="40" 
@@ -105,10 +126,56 @@
                              Clicked="OnBackClicked"
                              Margin="-5, 0, 0, 0"/>
             </Frame>
-            <Frame HorizontalOptions="End" HeightRequest="40" WidthRequest="40" CornerRadius="20" Padding="0" BackgroundColor="#80000000" BorderColor="Transparent" InputTransparent="False">
-                <Label Text="☰" HorizontalOptions="Center" VerticalOptions="Center" FontSize="20" TextColor="White"/> 
-            </Frame>
+            <Frame Grid.Column="0" 
+                    HeightRequest="40" 
+                    WidthRequest="40" 
+                    CornerRadius="20" 
+                    Padding="0" 
+                    BackgroundColor="#80FFFFFF"
+                    BorderColor="Transparent" 
+                    HasShadow="False"
+                    HorizontalOptions="End">
+                    <ImageButton Source="settings.png"
+                             HorizontalOptions="End" 
+                             VerticalOptions="Center" 
+                             HeightRequest="40" 
+                             WidthRequest="40" 
+                             CornerRadius="20" 
+                             Padding="10"
+                             BackgroundColor="Transparent" 
+                             Clicked="OnSettingsClicked"
+                             Margin="0, 0, -3, 0"/>
+                </Frame>
         </Grid>
+<Grid x:Name="SettingsOverlay" 
+              IsVisible="False" 
+              BackgroundColor="#40000000" 
+              HorizontalOptions="Fill" 
+              VerticalOptions="Fill">
 
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnCloseSettingsClicked"/>
+            </Grid.GestureRecognizers>
+
+            <Border BackgroundColor="#E5E5EA" 
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 10"
+                    HorizontalOptions="End" 
+                    VerticalOptions="Start"
+                    WidthRequest="220"
+                    Margin="0, 90, 20, 0"
+                    Padding="0">
+                
+                <VerticalStackLayout Spacing="0">
+                    <Button Text="Usuń wydarzenie" 
+                            TextColor="#FF3B30" 
+                            BackgroundColor="Transparent" 
+                            FontSize="16"
+                            HeightRequest="50"
+                            HorizontalOptions="Start"
+                            Clicked="OnDeleteGroupClicked"/>
+                </VerticalStackLayout>
+            </Border>
+        </Grid>
     </Grid>
 </ContentPage>

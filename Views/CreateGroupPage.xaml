@@ -1,15 +1,22 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:models="clr-namespace:MauiAppB.Models"
+             
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
              ios:Page.UseSafeArea="False"
+             
              x:Class="MauiAppB.Views.CreateGroupPage"
-             NavigationPage.HasNavigationBar="False"
-             BackgroundColor="White">
+             NavigationPage.HasNavigationBar="False">
 
-    <Grid RowDefinitions="Auto, *">
-        
-        <Grid Grid.Row="0" Margin="20, 45, 20, 0" HeightRequest="40">
+    <Grid>
+        <Image Source="bg_main.png"
+               Aspect="AspectFill"
+               HorizontalOptions="Fill"
+               VerticalOptions="Fill"/>
+
+        <ScrollView>
+            <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto"
+                  Padding="20, 30, 20, 20"
+                  RowSpacing="20">
             <Frame Grid.Column="0" 
                     HeightRequest="40" 
                     WidthRequest="40" 
@@ -19,31 +26,58 @@
                     BorderColor="Transparent" 
                     HasShadow="False"
                     HorizontalOptions="Start">
-                <ImageButton Source="powrot.png" 
-                         HorizontalOptions="Start" 
-                         VerticalOptions="Center" 
-                         HeightRequest="40"  
-                         WidthRequest="40"
-                         Padding="10"
-                         BackgroundColor="Transparent"
-                         Clicked="OnBackClicked"
-                         Margin="-10, 0, 0, 0"/>
+                <ImageButton Grid.Row="0"
+                             Source="powrot.png"
+                             HorizontalOptions="Start" 
+                             VerticalOptions="Start"
+                             HeightRequest="40"  
+                             WidthRequest="40"
+                             Padding="10"
+                             BackgroundColor="Transparent"
+                             Clicked="OnBackClicked"
+                             Margin="-5, 0, 0, 0"/> 
+                             
             </Frame>
-        </Grid>
+                    <Label Grid.Row="1"
+                       Text="Stwórz grupę"
+                       FontSize="40"
+                       TextColor="Black"
+                       FontAttributes="Bold"
+                       Margin="0, 10, 0, 20"/>
 
-        <VerticalStackLayout Grid.Row="1" VerticalOptions="Center" HorizontalOptions="Center" Spacing="20">
-            
-            <Label Text="Stwórz nową grupę" 
-                   FontSize="24" 
-                   TextColor="Black" 
-                   FontAttributes="Bold"
-                   HorizontalOptions="Center"/>
-            
-            <Label Text="Тут будет форма создания" 
-                   TextColor="Gray" 
-                   HorizontalOptions="Center"/>
+                <VerticalStackLayout Grid.Row="2" Spacing="15">
+                    <Border Stroke="Black" StrokeThickness="1" StrokeShape="RoundRectangle 10" BackgroundColor="#80FFFFFF" HeightRequest="120">
+                        <!-- <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnPhotoClicked"/>
+                        </Border.GestureRecognizers> -->
+                        <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="5">
+                            <Label Text="📷" FontSize="24" HorizontalOptions="Center" TextColor="Black"/>
+                            <Label Text="Dodaj zdjęcie" FontSize="14" TextColor="Black" HorizontalOptions="Center"/>
+                        </VerticalStackLayout>
+                    </Border>
+                    
+                    <Border Stroke="Black" StrokeThickness="1" StrokeShape="RoundRectangle 10" BackgroundColor="White" HeightRequest="55" Padding="15,0">
+                        <Entry x:Name="GroupNameEntry" Placeholder="Nazwa grupy" PlaceholderColor="Gray" TextColor="Black" VerticalOptions="Center"/>
+                    </Border>
+<BoxView HeightRequest="1" Color="Gray" Opacity="0.3" Margin="0, 10"/>
 
-        </VerticalStackLayout>
+                    <Label Text="Dodaj uczestników" FontSize="16" FontAttributes="Bold" TextColor="Black"/>
 
+                    <Grid ColumnDefinitions="*, 50" ColumnSpacing="10">
+                        <Border Grid.Column="0" Stroke="Black" StrokeThickness="1" StrokeShape="RoundRectangle 10" BackgroundColor="White" HeightRequest="50" Padding="15,0">
+                            <Entry x:Name="UsernameEntry" Placeholder="Username (np. @anna)" PlaceholderColor="Gray" TextColor="Black" VerticalOptions="Center"/>
+                        </Border>
+
+                        <Button Grid.Column="1" Text="+" FontSize="24" TextColor="White" BackgroundColor="Black" CornerRadius="10" Padding="0" Clicked="OnAddMemberClicked"/>
+                    </Grid>
+
+                    <VerticalStackLayout x:Name="MembersStack" Spacing="10">
+                        </VerticalStackLayout>
+
+                    <Button Text="Utwórz grupę" BackgroundColor="Black" TextColor="White" FontAttributes="Bold" CornerRadius="25" HeightRequest="50" Margin="0, 20, 0, 50" Clicked="OnCreateClicked"/>
+                    
+                </VerticalStackLayout>
+            </Grid>
+        </ScrollView>
     </Grid>
 </ContentPage>

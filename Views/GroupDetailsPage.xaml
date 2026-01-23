@@ -90,6 +90,10 @@
                                             <Label Text="{Binding Time}" FontSize="14" TextColor="Black"/>
                                         </HorizontalStackLayout>
                                     </Grid>
+                                    <HorizontalStackLayout Spacing="5" Margin="0, -3, 0, 0">
+                <Label Text="📍" FontSize="14" TextColor="#555555" VerticalOptions="Center"/>
+                <Label Text="{Binding Location}" FontSize="14" TextColor="#555555" FontAttributes="Bold" VerticalOptions="Center"/>
+            </HorizontalStackLayout>
 
                                     <Label Text="{Binding Description}" FontSize="14" TextColor="#333333"/>
 

@@ -33,6 +33,7 @@ public partial class GroupsPage : ContentPage
         {
             Name = "Kabacki Las",
             Time = "Piątek 18:00",
+            Location = "Warszawa, Kabaty",
             Description = "Wycieczka lasem",
             ImageUrl = "free.png",
             IsActionButtonsVisible = true
@@ -51,6 +52,7 @@ public partial class GroupsPage : ContentPage
         {
             Name = "Zakopane",
             Time = "Wtorek 10:00",
+            Location = "Warszawa, gfhgjk",
             Description = "Góry i narty",
             ImageUrl = "free.png",
             IsActionButtonsVisible = false
