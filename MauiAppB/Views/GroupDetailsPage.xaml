@@ -1,0 +1,168 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:MauiAppB.Models"
+             xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
+             ios:Page.UseSafeArea="False"
+             x:Class="MauiAppB.Views.GroupDetailsPage"
+             NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <x:Boolean x:Key="True">True</x:Boolean>
+            <x:Boolean x:Key="False">False</x:Boolean>
+            <models:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid>
+        <Image Source="bg_main.png" Aspect="AspectFill" HorizontalOptions="Fill" VerticalOptions="Fill"/>
+
+        <Grid RowDefinitions="Auto, *">
+            
+            <Grid Grid.Row="0" Margin="20, 15, 20, 0" HeightRequest="40">
+                <Frame Grid.Column="0" 
+                    HeightRequest="40" 
+                    WidthRequest="40" 
+                    CornerRadius="20" 
+                    Padding="0" 
+                    BackgroundColor="#80FFFFFF"
+                    BorderColor="Transparent" 
+                    HasShadow="False"
+                    HorizontalOptions="Start">
+                <ImageButton Source="powrot.png" 
+                             HorizontalOptions="Start" 
+                             VerticalOptions="Center" 
+                             HeightRequest="40"  
+                             WidthRequest="40"
+                             Padding="10"
+                             BackgroundColor="Transparent"
+                             Clicked="OnBackClicked"
+                             Margin="-5, 0, 0, 0"/>
+                </Frame>
+                <Label Text="Wydarzenia"
+                       FontSize="20"
+                       FontAttributes="Bold"
+                       TextColor="Black"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"/>
+                <Frame Grid.Column="0" 
+                    HeightRequest="40" 
+                    WidthRequest="40" 
+                    CornerRadius="20" 
+                    Padding="0" 
+                    BackgroundColor="#80FFFFFF"
+                    BorderColor="Transparent" 
+                    HasShadow="False"
+                    HorizontalOptions="End">
+                    <ImageButton Source="settings.png"
+                             HorizontalOptions="End" 
+                             VerticalOptions="Center" 
+                             HeightRequest="40" 
+                             WidthRequest="40" 
+                             CornerRadius="20" 
+                             Padding="10"
+                             BackgroundColor="Transparent" 
+                             Clicked="OnSettingsClicked"
+                             Margin="0, 0, -3, 0"/>
+                </Frame>
+            </Grid>
+
+            <Grid Grid.Row="1"> <CollectionView x:Name="EventsCollection" 
+                                IsVisible="True" 
+                                ItemsSource="{Binding Events}"
+                                SelectionMode="Single"
+                                SelectionChanged="OnEventSelected">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Event">
+                            <Border Margin="15, 10, 15, 5" Padding="0" StrokeThickness="0" StrokeShape="RoundRectangle 15" BackgroundColor="#95FFFFFF">
+                                <VerticalStackLayout Padding="15" Spacing="8">
+                                    <Frame CornerRadius="10" Padding="0" IsClippedToBounds="True" HeightRequest="180" BorderColor="Transparent" BackgroundColor="#E0E0E0">
+                                        <Image Source="{Binding ImageUrl}" Aspect="AspectFill"/>
+                                    </Frame>
+
+                                    <Grid ColumnDefinitions="*, Auto" Margin="0, 5, 0, 0">
+                                        <HorizontalStackLayout Grid.Column="0" Spacing="5" VerticalOptions="Center">
+                                            <Label Text="{Binding Name}" FontSize="18" FontAttributes="Bold" TextColor="Black"/>
+                                            <Label Text="●" FontSize="12" TextColor="Black" VerticalOptions="Center"/>
+                                        </HorizontalStackLayout>
+                                        <HorizontalStackLayout Grid.Column="1" Spacing="5" VerticalOptions="Center">
+                                            <Label Text="🕒" FontSize="14" TextColor="Gray" VerticalOptions="Center"/> 
+                                            <Label Text="{Binding Time}" FontSize="14" TextColor="Black"/>
+                                        </HorizontalStackLayout>
+                                    </Grid>
+                                    <HorizontalStackLayout Spacing="5" Margin="0, -3, 0, 0">
+                <Label Text="📍" FontSize="14" TextColor="#555555" VerticalOptions="Center"/>
+                <Label Text="{Binding Location}" FontSize="14" TextColor="#555555" FontAttributes="Bold" VerticalOptions="Center"/>
+            </HorizontalStackLayout>
+
+                                    <Label Text="{Binding Description}" FontSize="14" TextColor="#333333"/>
+
+                                    <Grid ColumnDefinitions="*, *" ColumnSpacing="15" Margin="0, 10, 0, 5" IsVisible="{Binding IsActionButtonsVisible}">
+                                        <Button Grid.Column="0" Text="Będę" BackgroundColor="#D0D0D0" TextColor="Black" FontAttributes="Bold" CornerRadius="20" HeightRequest="40" Padding="0" Clicked="OnDecisionClicked"/>
+                                        <Button Grid.Column="1" Text="Nie będę" BackgroundColor="#D0D0D0" TextColor="Black" FontAttributes="Bold" CornerRadius="20" HeightRequest="40" Padding="0" Clicked="OnDecisionClicked"/>
+                                    </Grid>
+
+                                    <VerticalStackLayout IsVisible="{Binding IsActionButtonsVisible, Converter={x:StaticResource InvertedBoolConverter}}" Spacing="10" HorizontalOptions="Center" Margin="0, 10, 0, 5">
+                                        <Label Text="Twoja odpowiedź została zapisana" TextColor="Gray" FontSize="12" HorizontalOptions="Center"/>
+                                        <Button Text="Zmień" BackgroundColor="#E0E0E0" TextColor="Black" CornerRadius="20" HeightRequest="35" WidthRequest="120" FontSize="12" Padding="0" Clicked="OnChangeDecisionClicked"/>
+                                    </VerticalStackLayout>
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                  
+                </CollectionView>
+
+                <Frame HeightRequest="60" 
+                       WidthRequest="60" 
+                       CornerRadius="30" 
+                       Padding="0" 
+                       HasShadow="True"
+                       BackgroundColor="White"
+                       BorderColor="Transparent"
+                       VerticalOptions="End"
+                       HorizontalOptions="End"
+                       Margin="25">
+                    
+                    <ImageButton Source="plus.png" 
+                                 Padding="15" 
+                                 BackgroundColor="Transparent"
+                                 Clicked="OnCreateEventClicked"/>
+                </Frame>
+
+            </Grid> 
+        </Grid> 
+
+        <Grid x:Name="SettingsOverlay" 
+              IsVisible="False" 
+              BackgroundColor="#40000000" 
+              HorizontalOptions="Fill" 
+              VerticalOptions="Fill">
+
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnCloseSettingsClicked"/>
+            </Grid.GestureRecognizers>
+
+            <Border BackgroundColor="#E5E5EA" 
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 10"
+                    HorizontalOptions="End" 
+                    VerticalOptions="Start"
+                    WidthRequest="220"
+                    Margin="0, 90, 20, 0"
+                    Padding="0">
+                
+                <VerticalStackLayout Spacing="0">
+                    <Button Text="Usuń i opuść grupę" 
+                            TextColor="#FF3B30" 
+                            BackgroundColor="Transparent" 
+                            FontSize="16"
+                            HeightRequest="50"
+                            HorizontalOptions="Start"
+                            Clicked="OnDeleteGroupClicked"/>
+                </VerticalStackLayout>
+            </Border>
+        </Grid>
+
+    </Grid>
+</ContentPage>

@@ -1,0 +1,90 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             
+             xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
+             ios:Page.UseSafeArea="False"
+             
+             x:Class="MauiAppB.Views.LoginPage"
+             NavigationPage.HasNavigationBar="False">
+
+    <Grid>
+        <Image Source="bg_main.png" Aspect="AspectFill" HorizontalOptions="Fill" VerticalOptions="Fill"/>
+
+        <ScrollView>
+            <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto"
+                  Padding="20, 30, 20, 20"
+                  RowSpacing="20">
+                 <Frame Grid.Column="0" 
+                    HeightRequest="40" 
+                    WidthRequest="40" 
+                    CornerRadius="20" 
+                    Padding="0" 
+                    BackgroundColor="#80FFFFFF"
+                    BorderColor="Transparent" 
+                    HasShadow="False"
+                    HorizontalOptions="Start">
+                <ImageButton Grid.Row="0"
+                             Source="powrot.png"
+                             HorizontalOptions="Start"
+                             HeightRequest="40"  
+                             WidthRequest="40"
+                             Padding="10"
+                             BackgroundColor="Transparent"
+                             Clicked="OnBackClicked"
+                             Margin="-5, 0, 0, 0"/>
+                </Frame>
+                <Label Grid.Row="1"
+                    Text="Log In"
+                       FontSize="40"
+                       TextColor="Black"
+                       FontAttributes="Bold"
+                       Margin="0, 10, 0, 20"/>
+
+                <Border Grid.Row="2"
+                    Stroke="Black" 
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 10" 
+                    BackgroundColor="White" 
+                    HeightRequest="55" 
+                    Padding="15,0">
+
+                    <Entry x:Name="UsernameEntry" Placeholder="Username"
+                        PlaceholderColor="Gray" 
+                        TextColor="Black" 
+                        VerticalOptions="Center" 
+                        Keyboard="Email"/>
+                </Border>
+
+                <Border  Grid.Row="3"
+                    Stroke="Black" 
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 10" 
+                    BackgroundColor="White" 
+                    HeightRequest="55" 
+                    Padding="15,0">
+
+                <Entry x:Name="PasswordEntry" 
+                    Placeholder="Password" 
+                    PlaceholderColor="Gray" 
+                    TextColor="Black" 
+                    IsPassword="True" 
+                    VerticalOptions="Center"/>
+                </Border>
+
+                <Button Grid.Row="4"
+                        Text="Login"
+                        BackgroundColor="Transparent" 
+                        BorderColor="Black"
+                        TextColor="Black"
+                        BorderWidth="1"
+                        FontAttributes="Bold"
+                        CornerRadius="25"
+                        HeightRequest="40"
+                        WidthRequest="150"
+                        HorizontalOptions="Center"
+                        Margin="0, 20, 0, 0"
+                        Clicked="OnLoginClicked"/>
+            </Grid>
+        </ScrollView>
+    </Grid>
+</ContentPage>

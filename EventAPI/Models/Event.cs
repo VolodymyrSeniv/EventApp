@@ -16,6 +16,7 @@ public class Event
     
     [JsonIgnore]
     public Group Group { get; set; }
+    public string? Link { get; set; }
 
     // Kto bierze udział?
     public List<User> Participants { get; set; } = new();

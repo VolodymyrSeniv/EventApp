@@ -30,18 +30,18 @@ namespace EventAPI.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("GroupId")
                         .HasColumnType("integer");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Link")
                         .HasColumnType("text");
 
                     b.Property<string>("Location")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
@@ -49,7 +49,6 @@ namespace EventAPI.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Time")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");

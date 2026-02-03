@@ -1,0 +1,155 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
+             ios:Page.UseSafeArea="False"
+             x:Class="MauiAppB.Views.ProfilePage"
+             NavigationPage.HasNavigationBar="False">
+
+    <Grid>
+        <Image Source="bg_main.png" Aspect="AspectFill" HorizontalOptions="Fill" VerticalOptions="Fill"/>
+
+        <Grid RowDefinitions="Auto, Auto, *">
+
+            <Grid Grid.Row="0" Margin="20, 15, 20, 0" HeightRequest="40">
+                
+                <Frame HorizontalOptions="Start"
+                       HeightRequest="40" 
+                       WidthRequest="40" 
+                       CornerRadius="20" 
+                       Padding="0" 
+                       BackgroundColor="#80FFFFFF"
+                       BorderColor="Transparent" 
+                       HasShadow="False">
+                    <ImageButton Source="powrot.png" 
+                                 HorizontalOptions="Fill" 
+                                 VerticalOptions="Fill" 
+                                 Aspect="AspectFit"
+                                 Padding="12"
+                                 BackgroundColor="Transparent"
+                                 Clicked="OnBackClicked"/>
+                </Frame>
+
+                <HorizontalStackLayout HorizontalOptions="End" 
+                                       VerticalOptions="Center" 
+                                       Spacing="10">
+                    
+                    <Frame HeightRequest="40" 
+                           WidthRequest="40" 
+                           CornerRadius="20" 
+                           Padding="0" 
+                           BackgroundColor="#80FFFFFF"
+                           BorderColor="Transparent" 
+                           HasShadow="False">
+                        <ImageButton Source="edytuj.png"
+                                     HorizontalOptions="Fill" 
+                                     VerticalOptions="Fill" 
+                                     Aspect="AspectFit"
+                                     Padding="10"
+                                     BackgroundColor="Transparent"
+                                     Clicked="OnEditClicked"/> 
+                    </Frame>
+
+                    <Frame HeightRequest="40" 
+                           WidthRequest="40" 
+                           CornerRadius="20" 
+                           Padding="0" 
+                           BackgroundColor="#80FFFFFF"
+                           BorderColor="Transparent" 
+                           HasShadow="False">
+                        <ImageButton Source="settings.png"
+                                     HorizontalOptions="Fill" 
+                                     VerticalOptions="Fill" 
+                                     Aspect="AspectFit"
+                                     Padding="10"
+                                     BackgroundColor="Transparent" 
+                                     Clicked="OnSettingsClicked"/>
+                    </Frame>
+                </HorizontalStackLayout>
+            </Grid>
+
+            <Border Grid.Row="1" 
+                    Margin="20, 20, 20, 30" 
+                    Padding="20, 25"
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 30"
+                    BackgroundColor="#99FFFFFF">
+                
+                <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
+                    <Frame HeightRequest="120" WidthRequest="120" CornerRadius="60" Padding="0" IsClippedToBounds="True" BorderColor="Transparent" HorizontalOptions="Center" BackgroundColor="#E0E0E0">
+                        <Image Source="{Binding PhotoUrl}" Aspect="AspectFill"/>
+                    </Frame>
+
+                    <HorizontalStackLayout HorizontalOptions="Center" Spacing="5" Margin="0, 5, 0, 0">
+                        <Label Text="{Binding FirstName}" FontSize="28" FontAttributes="Bold" TextColor="Black"/>
+                        <Label Text="{Binding LastName}" FontSize="28" FontAttributes="Bold" TextColor="Black"/>
+                    </HorizontalStackLayout>
+                
+                    <!-- <Label Text="{Binding Status}" FontSize="14" TextColor="#404040" HorizontalOptions="Center"/> -->
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Grid.Row="2" 
+                    BackgroundColor="#F5F5F5" 
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 30,30,0,0" 
+                    VerticalOptions="Fill"
+                    Margin="0,0,0,0">
+                
+                <ScrollView>
+                    <VerticalStackLayout Padding="30" Spacing="25">
+                        
+                        <Label Text="Info" FontSize="16" FontAttributes="Bold" TextColor="Black"/>
+
+                        <VerticalStackLayout Spacing="2">
+                            <Label Text="{Binding PhoneNumber}" FontSize="18" FontAttributes="Bold" TextColor="Black"/>
+                            <Label Text="Numer telefonu" FontSize="12" TextColor="Gray"/>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="2">
+                            <Label Text="{Binding Bio}" FontSize="18" FontAttributes="Bold" TextColor="Black"/>
+                            <Label Text="O mnie" FontSize="12" TextColor="Gray"/>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="2">
+                            <Label Text="{Binding Username, StringFormat='@{0}'}" FontSize="18" FontAttributes="Bold" TextColor="Black"/>
+                            <Label Text="Nazwa użytkownika" FontSize="12" TextColor="Gray"/>
+                        </VerticalStackLayout>
+
+                    </VerticalStackLayout>
+                </ScrollView>
+            </Border>
+
+        </Grid>
+
+        <Grid x:Name="SettingsOverlay" 
+              IsVisible="False" 
+              BackgroundColor="#40000000" 
+              HorizontalOptions="Fill" 
+              VerticalOptions="Fill">
+
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnCloseSettingsClicked"/>
+            </Grid.GestureRecognizers>
+
+            <Border BackgroundColor="#E5E5EA" 
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 10"
+                    HorizontalOptions="End" 
+                    VerticalOptions="Start"
+                    WidthRequest="220"
+                    Margin="0, 90, 20, 0" 
+                    Padding="0">
+                <VerticalStackLayout Spacing="0">
+                    <Button Text="Wyloguj się" 
+                            TextColor="#FF3B30" 
+                            BackgroundColor="Transparent" 
+                            FontSize="16"
+                            HeightRequest="50"
+                            HorizontalOptions="Start"
+                            Clicked="OnDeleteProfileClicked"/> 
+                    </VerticalStackLayout>
+            </Border>
+        </Grid>
+
+    </Grid>
+</ContentPage>

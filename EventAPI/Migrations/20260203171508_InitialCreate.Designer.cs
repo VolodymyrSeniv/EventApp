@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EventAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260203110805_InitialCreate")]
+    [Migration("20260203171508_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -33,18 +33,18 @@ namespace EventAPI.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("GroupId")
                         .HasColumnType("integer");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Link")
                         .HasColumnType("text");
 
                     b.Property<string>("Location")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
@@ -52,7 +52,6 @@ namespace EventAPI.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Time")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -95,6 +94,10 @@ namespace EventAPI.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("text");
@@ -108,10 +111,6 @@ namespace EventAPI.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("PhotoUrl")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("text");
 
