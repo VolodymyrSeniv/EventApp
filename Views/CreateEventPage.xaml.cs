@@ -1,12 +1,111 @@
 using Microsoft.Maui.Controls.Shapes;
+using Microsoft.Maui.Controls.Maps;
+using Microsoft.Maui.Devices.Sensors; // For Location
+using Microsoft.Maui.Maps;
+using MauiAppB.Models;
 namespace MauiAppB.Views;
 
 public partial class CreateEventPage : ContentPage
 {
-	public CreateEventPage()
+    private int _targetGroupId;
+    private Event _eventToEdit;
+    public CreateEventPage(int groupId)
 	{
 		InitializeComponent();
-	}
+        _targetGroupId = groupId;
+        TitleLabel.Text = "Stwórz wydarzenie";
+    }
+
+    public CreateEventPage(Event eventToEdit)
+    {
+        InitializeComponent();
+        _eventToEdit = eventToEdit;
+        _targetGroupId = eventToEdit.GroupId;
+
+        // Fill existing data into fields
+        NameEntry.Text = eventToEdit.Name;
+        DescriptionEntry.Text = eventToEdit.Description;
+        EventDatePicker.Date = eventToEdit.Date;
+        EventTimePicker.Time = eventToEdit.Time;
+        LocationLabel.Text = eventToEdit.Location;
+
+        CreateButton.Text = "Zapisz zmiany";
+        TitleLabel.Text = "Edytuj wydarzenie";
+    }
+
+    private Location _selectedLocation;
+    // 1. Wyszukiwanie po wpisaniu nazwy (np. "Restauracja Sphinx")
+    private async void OnSearchLocationPressed(object sender, EventArgs e)
+    {
+        string query = LocationSearchBar.Text;
+        if (string.IsNullOrWhiteSpace(query)) return;
+
+        try
+        {
+            // Zamiana nazwy/adresu na współrzędne
+            var locations = await Geocoding.Default.GetLocationsAsync(query);
+            var location = locations?.FirstOrDefault();
+
+            if (location != null)
+            {
+                UpdateMapAndAddress(location);
+            }
+            else
+            {
+                await DisplayAlert("Błąd", "Nie znaleziono takiego miejsca.", "OK");
+            }
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Błąd", "Problem z wyszukiwaniem: " + ex.Message, "OK");
+        }
+    }
+
+    // 2. Metoda aktualizująca mapę i etykietę adresu
+    private async void UpdateMapAndAddress(Location location)
+    {
+        _selectedLocation = location;
+
+        // Przesuń mapę do znalezionego miejsca
+        LocationMap.MoveToRegion(MapSpan.FromCenterAndRadius(location, Distance.FromKilometers(0.5)));
+
+        // Dodaj pinezkę
+        LocationMap.Pins.Clear();
+        var pin = new Pin
+        {
+            Label = "Miejsce wydarzenia",
+            Location = location,
+            Type = PinType.Place
+        };
+        LocationMap.Pins.Add(pin);
+
+        // REVERSE GEOCODING: Pobierz ludzką nazwę adresu
+        try
+        {
+            var placemarks = await Geocoding.Default.GetPlacemarksAsync(location);
+            var placemark = placemarks?.FirstOrDefault();
+
+            if (placemark != null)
+            {
+                // Budujemy ładny adres: np. "Restauracja, ul. Nowa 5, Warszawa"
+                string niceAddress = $"{placemark.Thoroughfare} {placemark.SubThoroughfare}, {placemark.Locality}";
+                LocationLabel.Text = $"Wybrany adres: {niceAddress}";
+
+                // Opcjonalnie: Zaktualizuj Label pinezki na nazwę ulicy
+                pin.Address = niceAddress;
+            }
+        }
+        catch
+        {
+            LocationLabel.Text = $"Wybrana lokalizacja: {location.Latitude:F4}, {location.Longitude:F4}";
+        }
+    }
+
+    // 3. Zaktualizuj też OnMapClicked, aby używało tej samej logiki adresu
+    private void OnMapClicked(object sender, MapClickedEventArgs e)
+    {
+        UpdateMapAndAddress(e.Location);
+    }
 
     private async void OnBackClicked(object sender, EventArgs e)
     {
@@ -66,23 +165,38 @@ public partial class CreateEventPage : ContentPage
     {
         try
         {
-            // 1. Проверяем, доступны ли поля (для отладки)
-            if (NameEntry == null) throw new Exception("Поле NameEntry не найдено!");
-            
-            // 2. Собираем данные (пока просто для теста)
-            string name = NameEntry.Text;
-            string description = DescriptionEntry.Text;
+            if (string.IsNullOrWhiteSpace(NameEntry.Text))
+            {
+                await DisplayAlert("Błąd", "Wpisz nazwę wydarzenia!", "OK");
+                return;
+            }
 
-            // 3. Выводим успех
-            await DisplayAlert("Sukces", $"Wydarzenie '{name}' zostało utworzone!", "OK");
-            
-            // 4. Возвращаемся назад
+            var eventData = _eventToEdit ?? new Event();
+            eventData.Name = NameEntry.Text;
+            eventData.Description = DescriptionEntry.Text;
+            eventData.GroupId = _targetGroupId;
+            eventData.Date = EventDatePicker.Date;
+            eventData.Time = EventTimePicker.Time;
+            eventData.Location = LocationLabel.Text;
+
+            if (_eventToEdit == null)
+            {
+                // CREATE MODE
+                App.EventService.AddEvent(eventData);
+                await DisplayAlert("Sukces", "Wydarzenie utworzone!", "OK");
+            }
+            else
+            {
+                // EDIT MODE
+                App.EventService.UpdateEvent(eventData);
+                await DisplayAlert("Sukces", "Wydarzenie zaktualizowane!", "OK");
+            }
+
             await Navigation.PopAsync();
         }
         catch (Exception ex)
         {
-            // ЕСЛИ ОШИБКА ЕСТЬ - ОНА ПОЯВИТСЯ ТУТ, А НЕ ВЫЛЕТИТ
-            await DisplayAlert("Ошибка (Błąd)", ex.ToString(), "OK");
+            await DisplayAlert("Błąd", ex.Message, "OK");
         }
     }
 }

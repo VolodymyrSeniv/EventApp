@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:models="clr-namespace:MauiAppB.Models"
@@ -13,18 +14,16 @@
     </ContentPage.Resources>
 
     <Grid>
-        
         <Image Source="{Binding ImageUrl}" 
                Aspect="AspectFill" 
                VerticalOptions="Start" 
                HorizontalOptions="Fill"
-               HeightRequest="450"/> 
+               HeightRequest="450"/>
 
         <BoxView HeightRequest="150" VerticalOptions="Start" Color="#60000000" InputTransparent="True"/>
 
         <ScrollView VerticalScrollBarVisibility="Never">
             <VerticalStackLayout>
-                
                 <BoxView HeightRequest="320" Color="Transparent" InputTransparent="True"/>
 
                 <Border BackgroundColor="White" 
@@ -32,7 +31,7 @@
                         StrokeShape="RoundRectangle 30,30,0,0"
                         Padding="25, 30, 25, 50"
                         MinimumHeightRequest="500">
-                    
+
                     <VerticalStackLayout Spacing="20">
                         <Label Text="{Binding Name}" FontSize="32" FontAttributes="Bold" TextColor="Black"/>
 
@@ -40,16 +39,20 @@
                               RowDefinitions="Auto, Auto" 
                               ColumnSpacing="10" 
                               Margin="0, 5, 0, 5">
-                            
+
                             <Label Grid.Row="0" Grid.Column="1" 
                                    Text="Gdzie?" 
                                    FontSize="12" 
                                    TextColor="Gray"
-                                   Margin="0,0,0,-2"/> <Label Grid.Row="1" Grid.Column="0" 
+                                   Margin="0,0,0,-2"/>
+
+                            <Label Grid.Row="1" Grid.Column="0" 
                                    Text="📍" 
                                    FontSize="24" 
                                    VerticalOptions="Center"
-                                   Margin="0, -5, 0, 0"/> <Label Grid.Row="1" Grid.Column="1" 
+                                   Margin="0, -5, 0, 0"/>
+
+                            <Label Grid.Row="1" Grid.Column="1" 
                                    Text="{Binding Location}" 
                                    FontSize="18" 
                                    FontAttributes="Bold" 
@@ -61,14 +64,14 @@
 
                         <VerticalStackLayout Spacing="5">
                             <Label Text="Opis" FontSize="14" TextColor="Gray"/>
-                            <Label Text="{Binding Description}" FontSize="16" TextColor="Black"/>
+                            <Label Text="{Binding Description}" FontSize="16" TextColor="#333333"/>
                         </VerticalStackLayout>
 
                         <Border Stroke="#E0E0E0" StrokeThickness="1" StrokeShape="RoundRectangle 10" Padding="15">
                             <VerticalStackLayout Spacing="10">
                                 <Label Text="Czy pasuje wam czas?" FontAttributes="Bold" TextColor="Black"/>
 
-                                <VerticalStackLayout IsVisible="{Binding IsTimeConfirmed, Converter={x:StaticResource InvertedBoolConverter}}" Spacing="10">
+                                <VerticalStackLayout IsVisible="{Binding IsTimeConfirmed, Converter={StaticResource InvertedBoolConverter}}" Spacing="10">
                                     <RadioButton x:Name="RbTimeYes" Content="Tak" TextColor="Black"/>
                                     <RadioButton x:Name="RbTimeNo" Content="Proszę inny termin" TextColor="Black"/>
                                     <Button Text="Potwierdzam" BackgroundColor="Black" TextColor="White" CornerRadius="20" HeightRequest="40" Clicked="OnConfirmTimeClicked"/>
@@ -86,7 +89,7 @@
                             <VerticalStackLayout Spacing="10">
                                 <Label Text="Chcecie gdzieś obok najpierw pójść do restauracji?" FontAttributes="Bold" TextColor="Black"/>
 
-                                <VerticalStackLayout IsVisible="{Binding IsFoodConfirmed, Converter={x:StaticResource InvertedBoolConverter}}" Spacing="10">
+                                <VerticalStackLayout IsVisible="{Binding IsFoodConfirmed, Converter={StaticResource InvertedBoolConverter}}" Spacing="10">
                                     <RadioButton x:Name="RbFoodYes" Content="Zgadzam się" TextColor="Black"/>
                                     <RadioButton x:Name="RbFoodLater" Content="Możemy po" TextColor="Black"/>
                                     <Button Text="Potwierdzam" BackgroundColor="Black" TextColor="White" CornerRadius="20" HeightRequest="40" Clicked="OnConfirmFoodClicked"/>
@@ -105,53 +108,38 @@
             </VerticalStackLayout>
         </ScrollView>
 
-        <Grid VerticalOptions="Start" HeightRequest="40" Margin="20, 15, 20, 0" ZIndex="99" >
-             <Frame Grid.Column="0" 
+        <Grid VerticalOptions="Start" HeightRequest="40" Margin="20, 15, 20, 0" ZIndex="99" ColumnDefinitions="Auto, *">
+            <Border Grid.Column="0" 
                     HeightRequest="40" 
                     WidthRequest="40" 
-                    CornerRadius="20" 
+                    StrokeShape="RoundRectangle 20"
                     Padding="0" 
                     BackgroundColor="#80FFFFFF"
-                    BorderColor="Transparent" 
-                    HasShadow="False"
-                    HorizontalOptions="Start">
-
+                    StrokeThickness="0">
                 <ImageButton Source="powrot.png" 
-                             HorizontalOptions="Start" 
-                             VerticalOptions="Center"
-                             HeightRequest="40"  
-                             WidthRequest="40"
                              Padding="10"
                              BackgroundColor="Transparent"
-                             Clicked="OnBackClicked"
-                             Margin="-5, 0, 0, 0"/>
-            </Frame>
-            <Frame Grid.Column="0" 
+                             Clicked="OnBackClicked"/>
+            </Border>
+
+            <Border Grid.Column="1" 
                     HeightRequest="40" 
                     WidthRequest="40" 
-                    CornerRadius="20" 
+                    StrokeShape="RoundRectangle 20"
                     Padding="0" 
                     BackgroundColor="#80FFFFFF"
-                    BorderColor="Transparent" 
-                    HasShadow="False"
+                    StrokeThickness="0"
                     HorizontalOptions="End">
-                    <ImageButton Source="settings.png"
-                             HorizontalOptions="End" 
-                             VerticalOptions="Center" 
-                             HeightRequest="40" 
-                             WidthRequest="40" 
-                             CornerRadius="20" 
+                <ImageButton Source="settings.png"
                              Padding="10"
                              BackgroundColor="Transparent" 
-                             Clicked="OnSettingsClicked"
-                             Margin="0, 0, -3, 0"/>
-                </Frame>
+                             Clicked="OnSettingsClicked"/>
+            </Border>
         </Grid>
-<Grid x:Name="SettingsOverlay" 
+
+        <Grid x:Name="SettingsOverlay" 
               IsVisible="False" 
-              BackgroundColor="#40000000" 
-              HorizontalOptions="Fill" 
-              VerticalOptions="Fill">
+              BackgroundColor="#40000000">
 
             <Grid.GestureRecognizers>
                 <TapGestureRecognizer Tapped="OnCloseSettingsClicked"/>
@@ -165,15 +153,23 @@
                     WidthRequest="220"
                     Margin="0, 90, 20, 0"
                     Padding="0">
-                
+
                 <VerticalStackLayout Spacing="0">
+                    <Button Text="Edytuj wydarzenie" 
+                        TextColor="#007AFF" 
+                        BackgroundColor="Transparent" 
+                        FontSize="16"
+                        HeightRequest="50"
+                        Clicked="OnUpdateEventClicked"/>
+
+                    <BoxView HeightRequest="0.5" Color="Gray" Opacity="0.3" Margin="15,0"/>
+
                     <Button Text="Usuń wydarzenie" 
                             TextColor="#FF3B30" 
                             BackgroundColor="Transparent" 
                             FontSize="16"
                             HeightRequest="50"
-                            HorizontalOptions="Start"
-                            Clicked="OnDeleteGroupClicked"/>
+                            Clicked="OnDeleteEventClicked"/>
                 </VerticalStackLayout>
             </Border>
         </Grid>

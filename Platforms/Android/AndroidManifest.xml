@@ -1,9 +1,32 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
-<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-<uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
-<uses-permission android:name="android.permission.CAMERA" />
-	<application android:allowBackup="true" android:icon="@mipmap/appicon" android:roundIcon="@mipmap/appicon_round" android:supportsRtl="true"></application>
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.polly.eventapp">
+
 	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+	<uses-permission android:name="android.permission.CAMERA" />
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+	<application
+		android:allowBackup="true"
+		android:icon="@mipmap/appicon"
+		android:roundIcon="@mipmap/appicon_round"
+		android:supportsRtl="true"
+		android:debuggable="true"
+		android:networkSecurityConfig="@xml/network_security_config"
+		android:usesCleartextTraffic="true">
+		
+
+		<meta-data
+			android:name="com.google.android.geo.API_KEY"
+			android:value="AIzaSyBKv_xt6gFKDK_kpTvc5htQG2PK2DyCOK0" />
+
+		<meta-data
+			android:name="com.google.android.gms.version"
+			android:value="@integer/google_play_services_version" />
+
+	</application>
 </manifest>

@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using MauiAppB.Models;
+using MauiAppB.ViewModels;
 
 namespace MauiAppB.Views;
 
@@ -7,58 +8,19 @@ public partial class GroupDetailsPage : ContentPage
 {
     public ObservableCollection<Event> Events { get; set; } = new();
 
-    public GroupDetailsPage(Group group)
+    public GroupDetailsPage(GroupDetailsViewModel groupDetailsViewModel)
     {
         InitializeComponent();
-       Events = new ObservableCollection<Event>(group.Events);
-        if (Events.Count == 0) 
-        {
-             LoadFakeEvents(); // Only if needed
-        }
-        else
-        {
-            // Пробегаем по всем событиям и добавляем локацию, если её нет
-            foreach (var evt in Events)
-            {
-                if (string.IsNullOrEmpty(evt.Location))
-                {
-                    evt.Location = "Warszawa, Centrum (Auto)";
-                }
-            }
-        }
-
-        BindingContext = this; 
-        EventsCollection.ItemsSource = Events;
+        BindingContext = groupDetailsViewModel;
     }
-
-    public GroupDetailsPage()
+    protected override void OnAppearing()
     {
-        InitializeComponent();
-        LoadFakeEvents();
-        EventsCollection.ItemsSource = Events;
-    }
-
-    private void LoadFakeEvents()
-    {
-        Events.Clear();
-        Events.Add(new Event
+        base.OnAppearing();
+        var vm = BindingContext as GroupDetailsViewModel;
+        if (vm != null)
         {
-            Name = "Kabacki Las",
-            Description = "Wycieczka lasem",
-            Time = "Piątek 18:00",
-            Location = "Warszawa, Kabaty",
-            ImageUrl = "free.png",
-            IsActionButtonsVisible = true
-        });
-        Events.Add(new Event
-        {
-            Name = "Zakopane",
-            Description = "Góry i narty",
-            Time = "Wtorek 10:00",
-            Location = "Warszawa, gfhgjk",
-            ImageUrl = "free.png",
-            IsActionButtonsVisible = false
-        });
+            vm.LoadEvents(); // Wywołuje odświeżenie z bazy
+        }
     }
 
     private async void OnBackClicked(object sender, EventArgs e)
@@ -73,12 +35,9 @@ public partial class GroupDetailsPage : ContentPage
 
         if (selectedEvent != null)
         {
-            // Show the choice buttons again
             selectedEvent.IsActionButtonsVisible = true;
         }
     }
-
-    // Existing methods (OnDecisionClicked, OnBackClicked, etc.) remain the same
     private void OnDecisionClicked(object sender, EventArgs e)
     {
         var button = sender as Button;
@@ -136,57 +95,55 @@ public partial class GroupDetailsPage : ContentPage
 //     }
 private async void OnEventSelected(object sender, SelectionChangedEventArgs e)
     {
-        // 1. Проверяем, что нажали на ивент
         var selectedEvent = e.CurrentSelection.FirstOrDefault() as Event;
         if (selectedEvent == null) return;
-
-        // 2. Снимаем выделение (чтобы не горело серым)
         ((CollectionView)sender).SelectedItem = null;
-
-        // 3. Переходим на страницу деталей ИВЕНТА
         await Navigation.PushAsync(new EventDetailsPage(selectedEvent));
     }
-//     private void ResetTabs()
-//     {
-//         // Делаем все тексты полупрозрачными
-//         LblPhotos.Opacity = 0.5;
-//         LblVideos.Opacity = 0.5;
-//         LblEvents.Opacity = 0.5;
-//         LblLinks.Opacity = 0.5;
-
-//         // Скрываем все линии
-//         LinePhotos.IsVisible = false;
-//         LineVideos.IsVisible = false;
-//         LineEvents.IsVisible = false;
-//         LineLinks.IsVisible = false;
-//         LblFiles.Opacity = 0.5;
-// LineFiles.IsVisible = false;
-//     }
 private async void OnCreateEventClicked(object sender, EventArgs e)
     {
-        // Переход на страницу создания
-        await Navigation.PushAsync(new CreateEventPage());
+        var vm = BindingContext as GroupDetailsViewModel;
+        if (vm?.Groupka != null)
+        {
+            // Przekazujemy ID aktualnej grupy do konstruktora
+            await Navigation.PushAsync(new CreateEventPage(vm.Groupka.Id));
+        }
     }
     private void OnSettingsClicked(object sender, EventArgs e)
     {
         SettingsOverlay.IsVisible = true;
     }
 
-    // Закрыть меню (при клике на фон)
     private void OnCloseSettingsClicked(object sender, EventArgs e)
     {
         SettingsOverlay.IsVisible = false;
     }
 
-    // Удалить группу
     private async void OnDeleteGroupClicked(object sender, EventArgs e)
     {
-        bool answer = await DisplayAlert("Usuń grupę", "Czy na pewno?", "Tak", "Nie");
-        if (answer)
+        SettingsOverlay.IsVisible = false;
+
+        var vm = BindingContext as GroupDetailsViewModel;
+        if (vm?.Groupka != null)
         {
-            SettingsOverlay.IsVisible = false;
-            await Navigation.PopAsync(); // Уходим с страницы
+            await vm.DeleteGroupCommand.ExecuteAsync(vm.Groupka.Id);
         }
     }
-    
+    protected override void OnNavigatedTo(NavigatedToEventArgs args)
+    {
+        base.OnNavigatedTo(args);
+    }
+    private async void OnUpdateGroupClicked(object sender, EventArgs e)
+    {
+        SettingsOverlay.IsVisible = false;
+        var detailsVm = BindingContext as GroupDetailsViewModel;
+
+        if (detailsVm?.Groupka != null)
+        {
+            var listViewModel = Handler.MauiContext.Services.GetService<GroupListViewModel>();
+            var editPage = new CreateGroupPage(listViewModel);
+            editPage.InitializeForEdit(detailsVm.Groupka);
+            await Navigation.PushAsync(editPage);
+        }
+    }
 }

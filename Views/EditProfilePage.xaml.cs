@@ -24,4 +24,28 @@ public partial class EditProfilePage : ContentPage
         await DisplayAlert("Sukces", "Dane zostały zaktualizowane", "OK");
         await Navigation.PopAsync();
     }
-}
+
+    private async void OnChangePhotoClicked(object sender, EventArgs e)
+    {
+        try
+        {
+
+            var result = await MediaPicker.Default.PickPhotoAsync();
+
+            if (result != null)
+            {
+                var user = BindingContext as User;
+
+                if (user != null)
+                {
+                    user.PhotoUrl = result.FullPath;
+
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Błąd", "Nie udało się wybrać zdjęcia: " + ex.Message, "OK");
+        }
+    }
+    }

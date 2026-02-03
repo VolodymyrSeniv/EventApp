@@ -40,11 +40,11 @@ public partial class ProfilePage : ContentPage
             await Navigation.PushAsync(new EditProfilePage(currentUser));
         }
     }
-    private async void OnCreateEventClicked(object sender, EventArgs e)
-    {
-        // Переход на страницу создания
-        await Navigation.PushAsync(new CreateEventPage());
-    }
+    //private async void OnCreateEventClicked(object sender, EventArgs e)
+    //{
+    //    // Переход на страницу создания
+    //    await Navigation.PushAsync(new CreateEventPage());
+    //}
     private void OnSettingsClicked(object sender, EventArgs e)
     {
         SettingsOverlay.IsVisible = true;
@@ -68,13 +68,12 @@ public partial class ProfilePage : ContentPage
     }
     private async void OnDeleteProfileClicked(object sender, EventArgs e)
     {
-        // Используем await, чтобы убрать warning
         bool answer = await DisplayAlert("Wyloguj", "Czy na pewno chcesz się wylogować?", "Tak", "Nie");
-        
+
         if (answer)
         {
             SettingsOverlay.IsVisible = false;
-            await Navigation.PopAsync(); // Или логика выхода
+            Application.Current.MainPage = new NavigationPage(new LoginPage());
         }
     }
 }

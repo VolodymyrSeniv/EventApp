@@ -14,9 +14,23 @@ public partial class EventDetailsPage : ContentPage
         BindingContext = _currentEvent; 
     }
 
+    private void SaveChanges()
+    {
+        App.EventService.UpdateEvent(_currentEvent);
+    }
+
     private async void OnBackClicked(object sender, EventArgs e)
     {
         await Navigation.PopAsync();
+    }
+
+    private async void OnUpdateEventClicked(object sender, EventArgs e)
+    {
+        SettingsOverlay.IsVisible = false;
+
+        // Navigate to CreateEventPage passing the current event object
+        // This triggers the Edit Mode constructor
+        await Navigation.PushAsync(new CreateEventPage(_currentEvent));
     }
 
     // === ЛОГИКА ВРЕМЕНИ ===
@@ -24,19 +38,23 @@ public partial class EventDetailsPage : ContentPage
     {
         if (RbTimeYes.IsChecked) _currentEvent.TimeAnswer = "Tak";
         else if (RbTimeNo.IsChecked) _currentEvent.TimeAnswer = "Proszę inny termin";
-        else return; // Если ничего не выбрано
+        else return;
 
         _currentEvent.IsTimeConfirmed = true;
+
+        // Ręczne odświeżenie UI (ponieważ BindingContext to zwykły model, a nie ViewModel)
+        BindingContext = null;
+        BindingContext = _currentEvent;
+
+        SaveChanges();
     }
 
     private void OnChangeTimeClicked(object sender, EventArgs e)
     {
-        // Скрываем ответ, показываем вопросы
         _currentEvent.IsTimeConfirmed = false;
-        
-        // Сбрасываем выбор (галочки)
-        RbTimeYes.IsChecked = false;
-        RbTimeNo.IsChecked = false;
+        BindingContext = null;
+        BindingContext = _currentEvent;
+        SaveChanges();
     }
 
     // === ЛОГИКА ЕДЫ ===
@@ -47,6 +65,9 @@ public partial class EventDetailsPage : ContentPage
         else return;
 
         _currentEvent.IsFoodConfirmed = true;
+        BindingContext = null;
+        BindingContext = _currentEvent;
+        SaveChanges();
     }
 
     private void OnChangeFoodClicked(object sender, EventArgs e)
@@ -65,13 +86,28 @@ public partial class EventDetailsPage : ContentPage
     }
 
     // Удалить группу
-    private async void OnDeleteGroupClicked(object sender, EventArgs e)
+    private async void OnDeleteEventClicked(object sender, EventArgs e)
     {
-        bool answer = await DisplayAlert("Usuń wydarzenie", "Czy na pewno?", "Tak", "Nie");
+        // 1. Wyświetlenie potwierdzenia użytkownikowi
+        bool answer = await DisplayAlert("Usuń wydarzenie", "Czy na pewno chcesz usunąć to wydarzenie?", "Tak", "Nie");
+
         if (answer)
         {
-            SettingsOverlay.IsVisible = false;
-            await Navigation.PopAsync(); // Уходим с страницы
+            try
+            {
+                // 2. Ukrycie menu ustawień
+                SettingsOverlay.IsVisible = false;
+
+                // 3. KLUCZOWE: Usunięcie z bazy danych przy użyciu ID bieżącego wydarzenia
+                App.EventService.DeleteEvent(_currentEvent.Id);
+
+                // 4. Powrót do poprzedniej strony (listy wydarzeń)
+                await Navigation.PopAsync();
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Błąd", "Nie udało się usunąć wydarzenia: " + ex.Message, "OK");
+            }
         }
     }
 }

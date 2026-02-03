@@ -1,9 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
+             xmlns:maps="http://schemas.microsoft.com/dotnet/2021/maui/maps"
              ios:Page.UseSafeArea="False"
-             
              x:Class="MauiAppB.Views.CreateEventPage"
              NavigationPage.HasNavigationBar="False">
 
@@ -14,58 +14,84 @@
                VerticalOptions="Fill"/>
 
         <ScrollView>
-            <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto"
+            <Grid RowDefinitions="Auto, Auto, *"
                   Padding="20, 30, 20, 20"
                   RowSpacing="20">
-            <Frame Grid.Column="0" 
-                    HeightRequest="40" 
-                    WidthRequest="40" 
-                    CornerRadius="20" 
-                    Padding="0" 
-                    BackgroundColor="#80FFFFFF"
-                    BorderColor="Transparent" 
-                    HasShadow="False"
-                    HorizontalOptions="Start">
-                <ImageButton Grid.Row="0"
-                             Source="powrot.png"
-                             HorizontalOptions="Start" 
-                             VerticalOptions="Start"
-                             HeightRequest="40"  
-                             WidthRequest="40"
-                             Padding="10"
-                             BackgroundColor="Transparent"
-                             Clicked="OnBackClicked"
-                             Margin="-5, 0, 0, 0"/> 
-                             
-            </Frame>
-                    <Label Grid.Row="1"
+
+                <Border Grid.Row="0"
+                        HeightRequest="40" 
+                        WidthRequest="40" 
+                        HorizontalOptions="Start"
+                        BackgroundColor="#80FFFFFF"
+                        StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="20"/>
+                    </Border.StrokeShape>
+                    <ImageButton Source="powrot.png"
+                                 Padding="10"
+                                 BackgroundColor="Transparent"
+                                 Clicked="OnBackClicked"/>
+                </Border>
+
+                <Label x:Name="TitleLabel" 
+                       Grid.Row="1"
                        Text="Stwórz wydarzenie"
                        FontSize="40"
                        TextColor="Black"
                        FontAttributes="Bold"
-                       Margin="0, 10, 0, 20"/>
+                       Margin="0, 10, 0, 10"/>
 
                 <VerticalStackLayout Grid.Row="2" Spacing="15">
+
                     <Border Stroke="Black" StrokeThickness="1" StrokeShape="RoundRectangle 10" BackgroundColor="#80FFFFFF" HeightRequest="120">
-                        <!-- <Border.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnPhotoClicked"/>
-                        </Border.GestureRecognizers> -->
                         <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="5">
                             <Label Text="📷" FontSize="24" HorizontalOptions="Center" TextColor="Black"/>
                             <Label Text="Dodaj zdjęcie" FontSize="14" TextColor="Black" HorizontalOptions="Center"/>
                         </VerticalStackLayout>
                     </Border>
-                    
+
                     <Border Stroke="Black" StrokeThickness="1" StrokeShape="RoundRectangle 10" BackgroundColor="White" HeightRequest="55" Padding="15,0">
                         <Entry x:Name="NameEntry" Placeholder="Nazwa wydarzenia" PlaceholderColor="Gray" TextColor="Black" VerticalOptions="Center"/>
                     </Border>
-
 
                     <Border Stroke="Black" StrokeThickness="1" StrokeShape="RoundRectangle 10" BackgroundColor="White" HeightRequest="55" Padding="15,0">
                         <Entry x:Name="DescriptionEntry" Placeholder="Krótki opis wydarzenia" PlaceholderColor="Gray" TextColor="Black" VerticalOptions="Center"/>
                     </Border>
 
-                   <Border Stroke="Black" StrokeThickness="1" StrokeShape="RoundRectangle 10" BackgroundColor="White" HeightRequest="55" Padding="15,0">
+                    <Label Text="Kiedy?" FontSize="18" FontAttributes="Bold" TextColor="Black" Margin="0,5,0,0"/>
+                    <Grid ColumnDefinitions="*, *" ColumnSpacing="10">
+                        <Border Grid.Column="0" Stroke="Black" StrokeThickness="1" StrokeShape="RoundRectangle 10" BackgroundColor="White" HeightRequest="55" Padding="15,0">
+                            <DatePicker x:Name="EventDatePicker" MinimumDate="2024-01-01" TextColor="Black" VerticalOptions="Center"/>
+                        </Border>
+                        <Border Grid.Column="1" Stroke="Black" StrokeThickness="1" StrokeShape="RoundRectangle 10" BackgroundColor="White" HeightRequest="55" Padding="15,0">
+                            <TimePicker x:Name="EventTimePicker" TextColor="Black" VerticalOptions="Center"/>
+                        </Border>
+                    </Grid>
+
+                    <Label Text="Gdzie?" FontSize="18" FontAttributes="Bold" TextColor="Black" Margin="0,5,0,0"/>
+
+                    <Border Stroke="Black" StrokeThickness="1" StrokeShape="RoundRectangle 10" BackgroundColor="White" HeightRequest="55" Padding="5,0">
+                        <SearchBar x:Name="LocationSearchBar" 
+                                   Placeholder="Szukaj restauracji lub adresu..." 
+                                   SearchButtonPressed="OnSearchLocationPressed"
+                                   VerticalOptions="Center"
+                                   BackgroundColor="Transparent"
+                                   TextColor="Black"
+                                   PlaceholderColor="Gray"/>
+                    </Border>
+
+                    <Border Stroke="Black" StrokeThickness="1" StrokeShape="RoundRectangle 10" HeightRequest="250" BackgroundColor="White">
+                        <maps:Map x:Name="LocationMap" MapClicked="OnMapClicked" IsShowingUser="True" />
+                    </Border>
+
+                    <Label x:Name="LocationLabel" 
+                           Text="Wybrana lokalizacja: Nie wybrano" 
+                           FontSize="12" 
+                           TextColor="Black" 
+                           HorizontalOptions="Center"
+                           HorizontalTextAlignment="Center"/>
+
+                    <Border Stroke="Black" StrokeThickness="1" StrokeShape="RoundRectangle 10" BackgroundColor="White" HeightRequest="55" Padding="15,0">
                         <Entry x:Name="LinkEntry" Placeholder="Link (URL)" PlaceholderColor="Gray" TextColor="Black" VerticalOptions="Center" Keyboard="Url"/>
                     </Border>
 
@@ -78,38 +104,28 @@
                     </Border>
 
                     <VerticalStackLayout x:Name="PollOptionsStack" Spacing="10">
-                        
                         <Border Stroke="Gray" StrokeThickness="1" StrokeShape="RoundRectangle 10" BackgroundColor="White" HeightRequest="45" Padding="15,0">
                             <Entry Placeholder="Opcja 1" TextColor="Black" PlaceholderColor="Gray" VerticalOptions="Center"/>
                         </Border>
-                   
-                    
                         <Border Stroke="Gray" StrokeThickness="1" StrokeShape="RoundRectangle 10" BackgroundColor="White" HeightRequest="45" Padding="15,0">
                             <Entry Placeholder="Opcja 2" TextColor="Black" PlaceholderColor="Gray" VerticalOptions="Center"/>
                         </Border>
                     </VerticalStackLayout>
-                    <HorizontalStackLayout Spacing="15" Margin="0,5,0,0">
-                        <Button Text="+ Dodaj opcję" 
-                            TextColor="#007AFF" 
-                            BackgroundColor="Transparent" 
-                            HorizontalOptions="Start"
-                            Clicked="OnAddOptionClicked"/>
 
-                        <Button Text="- Usuń" 
-                            TextColor="#007AFF" 
-                            BackgroundColor="Transparent" 
-                            HorizontalOptions="End"
-                            Clicked="OnDeleteOptionClicked"/>
+                    <HorizontalStackLayout Spacing="15" Margin="0,5,0,0">
+                        <Button Text="+ Dodaj opcję" TextColor="#007AFF" BackgroundColor="Transparent" Clicked="OnAddOptionClicked"/>
+                        <Button Text="- Usuń" TextColor="#007AFF" BackgroundColor="Transparent" Clicked="OnDeleteOptionClicked"/>
                     </HorizontalStackLayout>
-                        <Button Text="Utwórz"
+
+                    <Button x:Name="CreateButton"
+                            Text="Utwórz"
                             BackgroundColor="Black"
                             TextColor="White"
                             FontAttributes="Bold"
                             CornerRadius="25"
                             HeightRequest="50"
-                            Margin="0, 20, 0, 0"
+                            Margin="0, 20, 0, 40"
                             Clicked="OnCreateClicked"/>
-                   
                 </VerticalStackLayout>
             </Grid>
         </ScrollView>

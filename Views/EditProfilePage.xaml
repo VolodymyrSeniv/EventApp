@@ -40,8 +40,11 @@
                         <Frame HeightRequest="100" WidthRequest="100" CornerRadius="50" Padding="0" IsClippedToBounds="True" HorizontalOptions="Center" BorderColor="Transparent">
                             <Image Source="{Binding PhotoUrl}" Aspect="AspectFill"/>
                         </Frame>
-                        <Label Text="Zmień zdjęcie" TextColor="Blue" FontSize="12" HorizontalOptions="Center" TextDecorations="Underline"/>
+                        <Label Text="Zmień zdjęcie" TextColor="Blue" FontSize="12" HorizontalOptions="Center" TextDecorations="Underline" />
 
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnChangePhotoClicked"/>
+                        </Label.GestureRecognizers>
                         <VerticalStackLayout Spacing="5">
                             <Label Text="Imię" FontSize="12" TextColor="Gray"/>
                             <Entry Text="{Binding FirstName}" TextColor="Black" BackgroundColor="White" ReturnType="Done"/>

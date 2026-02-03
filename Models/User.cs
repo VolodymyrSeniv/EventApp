@@ -1,19 +1,13 @@
+
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace MauiAppB.Models;
 
 // Добавляем INotifyPropertyChanged
-public class User : INotifyPropertyChanged
+public class User : BaseEntity
 {
-    // Вместо public string Name { get; set; } пишем развернуто:
-
-    private int _id;
-    public int Id
-    {
-        get => _id;
-        set { _id = value; OnPropertyChanged(); }
-    }
+    // Вместо public string Name { get; set; } пишем развернуто
 
     private string _firstName;
     public string FirstName
@@ -24,6 +18,13 @@ public class User : INotifyPropertyChanged
             _firstName = value; 
             OnPropertyChanged(); // <--- ЭТА СТРОКА ОБНОВЛЯЕТ ЭКРАН
         }
+    }
+
+    private string _email;
+    public string Email
+    {
+        get => _email;
+        set { _email = value; OnPropertyChanged(); }
     }
 
     private string _lastName;
@@ -66,6 +67,13 @@ public class User : INotifyPropertyChanged
     {
         get => _status;
         set { _status = value; OnPropertyChanged(); }
+    }
+
+    private string _password;
+    public string Password
+    {
+        get => _password;
+        set { _password = value; OnPropertyChanged(); }
     }
 
     // Стандартный код для уведомления интерфейса
