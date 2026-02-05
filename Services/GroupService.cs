@@ -1,5 +1,6 @@
 ﻿using MauiAppB.Models;
 using SQLite;
+using System;
 using System.Collections.Generic;
 
 namespace MauiAppB.Services
@@ -25,82 +26,87 @@ namespace MauiAppB.Services
                 conn.CreateTable<Group>();
             }
 
-            public Group GetGroup(int id)
+        public Group GetGroup(int id)
+        {
+            try
             {
-                try
-                {
-                    Init();
-                    return conn.Table<Group>().FirstOrDefault(q => q.Id == id);
-                }
-                catch (Exception)
-                {
-                    StatusMessage = "Failed to retrieve data.";
-                }
+                Init();
+                return conn.Table<Group>().FirstOrDefault(q => q.Id == id);
+            }
+            catch (Exception)
+            {
+                StatusMessage = "Failed to retrieve group.";
                 return null;
             }
+        }
 
-            public List<Group> GetGroups()
+        // Fix B: return groups where user is creator OR a member
+        public List<Group> GetGroups(int userId)
+        {
+            try
             {
-                try
-                {
-                    Init();
-                    return conn.Table<Group>().ToList();
-                }
-                catch (Exception)
-                {
-                    StatusMessage = "Failed to retrieve data.";
-                }
+                Init();
+                // Filtering groups by the CreatorId column
+                return conn.Table<Group>()
+                           .Where(g => g.CreatorId == userId)
+                           .ToList();
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = $"Failed to retrieve data: {ex.Message}";
                 return new List<Group>();
             }
-            public void AddGroup(Group groupka)
+        }
+
+        // Przy dodawaniu grupy upewnij się, że obiekt ma przypisane CreatorId
+        public void AddGroup(Group groupka)
+        {
+            try
             {
-                try
-                {
-                    Init();
+                Init();
+                if (groupka == null) throw new Exception("Invalid Group Record");
 
-                    if (groupka == null)
-                        throw new Exception("Invalid Group Record");
-                    result = conn.Insert(groupka);
-                    StatusMessage = result == 0 ? "Insert Failed" : "Insert Successfull";
-
-                }
-                catch (Exception ex)
-                {
-                    StatusMessage = "Failed to insert data.";
-                }
+                // Ważne: CreatorId musi być ustawione w ViewModelu przed wywołaniem tej metody!
+                int result = conn.Insert(groupka);
+                StatusMessage = result == 0 ? "Insert Failed" : "Insert Successful";
             }
-
-            public int DeleteGroup(int id)
+            catch (Exception ex)
             {
-                try
-                {
-                    Init();
-                    return conn.Table<Group>().Delete(q => q.Id == id);
-                }
-                catch (Exception)
-                {
-                    StatusMessage = "Failed to delete data.";
-                }
+                StatusMessage = $"Failed to insert data: {ex.Message}";
+            }
+        }
+
+        public int DeleteGroup(int id)
+        {
+            try
+            {
+                Init();
+                return conn.Delete<Group>(id);
+            }
+            catch (Exception)
+            {
+                StatusMessage = "Failed to delete data.";
                 return 0;
             }
+        }
 
-            public int UpdateGroup(Group groupka)
+        public int UpdateGroup(Group groupka)
+        {
+            try
             {
-                try
-                {
-                    Init();
-                    if (groupka == null || groupka.Id == 0)
-                        throw new Exception("Invalid Group Record for update");
+                Init();
+                if (groupka == null || groupka.Id == 0)
+                    throw new Exception("Invalid Group Record for update");
 
-                    result = conn.Update(groupka);
-                    StatusMessage = result == 0 ? "Update Failed" : "Update Successful";
-                    return result;
-                }
-                catch (Exception ex)
-                {
-                    StatusMessage = $"Failed to update data: {ex.Message}";
-                    return 0;
-                }
+                int result = conn.Update(groupka);
+                StatusMessage = result == 0 ? "Update Failed" : "Update Successful";
+                return result;
             }
+            catch (Exception ex)
+            {
+                StatusMessage = $"Failed to update data: {ex.Message}";
+                return 0;
+            }
+        }
     }
 }

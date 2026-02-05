@@ -12,8 +12,12 @@ public class Group: BaseEntity
         public string StatusText { get; set; }
         public string StatusColor { get; set; }
         public int NotificationCount { get; set; }
+        [Indexed]
+        public int CreatorId { get; set; }
+        [Ignore]
+        public User Creator { get; set; }
 
-        [Ignore] // Populated manually via Join Table
+    [Ignore] // Populated manually via Join Table
         public List<User> Members { get; set; } = new();
         [Ignore]
         public List<Event> Events { get; set; } = new();

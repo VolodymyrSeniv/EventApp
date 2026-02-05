@@ -12,17 +12,18 @@ public partial class ProfilePage : ContentPage
 
     private void LoadUserProfile()
     {
-        var myProfile = new User
+        // Pobieramy dane zalogowanego użytkownika z globalnego serwisu
+        var currentUser = MauiAppB.Services.UserService.CurrentUser;
+
+        if (currentUser != null)
         {
-            FirstName = "Ola",
-            LastName = "Nowak", // Добавили фамилию
-            PhotoUrl = "profil.png",
-            Status = "online",
-            PhoneNumber = "+48 111 111 111",
-            Bio = "Kocham koty",
-            Username = "@Olaaaa"
-        };
-        BindingContext = myProfile;
+            BindingContext = currentUser;
+        }
+        else
+        {
+            // Jeśli jakimś cudem nie ma usera, ustawiamy puste dane
+            BindingContext = new User { FirstName = "Gość" };
+        }
     }
 
     private async void OnBackClicked(object sender, EventArgs e)
@@ -72,7 +73,12 @@ public partial class ProfilePage : ContentPage
 
         if (answer)
         {
+            // CZYŚCIMY DANE LOGOWANIA
+            MauiAppB.Services.UserService.CurrentUser = null;
+            Preferences.Clear(); // Usuwa zapamiętane ID użytkownika
+
             SettingsOverlay.IsVisible = false;
+            // Przekierowanie do logowania
             Application.Current.MainPage = new NavigationPage(new LoginPage());
         }
     }

@@ -25,6 +25,8 @@ public partial class LoginPage : ContentPage
 
             if (user != null)
             {
+                MauiAppB.Services.UserService.CurrentUser = user;
+                Preferences.Set("UserId", user.Id);
                 var vm = Handler.MauiContext.Services.GetService<GroupListViewModel>();
                 Application.Current.MainPage = new NavigationPage(new GroupsPage(vm));
             }

@@ -30,19 +30,16 @@ namespace MauiAppB.ViewModels
 
         public ObservableCollection<string> AddedUsers { get; } = new();
 
-        // NEW METHOD: Call this when opening the page for editing
         public void SetEditMode(Group groupToEdit)
         {
             CurrentGroupId = groupToEdit.Id;
             NewGroupName = groupToEdit.Name;
             SelectedPhotoPath = groupToEdit.PhotoUrl;
 
-            // Change UI text
             PageTitle = "Edytuj grupę";
             ButtonText = "Zapisz zmiany";
         }
 
-        // NEW METHOD: Call this when opening the page for creating
         public void SetCreateMode()
         {
             CurrentGroupId = 0;
@@ -50,7 +47,6 @@ namespace MauiAppB.ViewModels
             SelectedPhotoPath = "group_placeholder.png";
             AddedUsers.Clear();
 
-            // Reset UI text
             PageTitle = "Stwórz grupę";
             ButtonText = "Utwórz grupę";
         }
@@ -62,32 +58,34 @@ namespace MauiAppB.ViewModels
         {
             Title = "Groups";
             this.groupService = groupService;
-            // Bezpieczniejsze wywołanie początkowe
             MainThread.BeginInvokeOnMainThread(async () => await GetGroupsList());
         }
 
         [RelayCommand]
-        async Task GetGroupsList()
+        public async Task GetGroupsList()
         {
             if (IsLoading) return;
             try
             {
                 IsLoading = true;
+                // Retrieve the logged-in user's ID
+                int currentUserId = Preferences.Get("UserId", 0);
 
-                // Pobieramy dane przez wstrzyknięty serwis
-                var groups = groupService.GetGroups();
+                if (currentUserId == 0)
+                {
+                    Debug.WriteLine("BŁĄD: Brak ID użytkownika w preferencjach!");
+                    return;
+                }
+
+                // Use the instance-based service instead of App.GroupService for consistency
+                var groups = groupService.GetGroups(currentUserId);
 
                 Groups.Clear();
                 foreach (var group in groups)
                 {
                     Groups.Add(group);
                 }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Unable to get groups: {ex.Message}");
-                // Używamy MainPage zamiast Shell.Current
-                await Application.Current.MainPage.DisplayAlert("Error!", "Failed to retrieve a list of groups", "OK");
+                Debug.WriteLine($"GetGroupsList: loaded {Groups.Count} groups for user {currentUserId}");
             }
             finally
             {
@@ -104,10 +102,8 @@ namespace MauiAppB.ViewModels
             var selectedGroup = groupService.GetGroup(id);
             if (selectedGroup == null) return;
 
-            // Pobieramy VM z DI
             var detailsVM = IPlatformApplication.Current.Services.GetService<GroupDetailsViewModel>();
 
-            // KLUCZOWE: Musisz ustawić Id przed wywołaniem LoadEvents
             detailsVM.Id = selectedGroup.Id;
             detailsVM.Groupka = selectedGroup;
 
@@ -127,41 +123,37 @@ namespace MauiAppB.ViewModels
             try
             {
                 IsLoading = true;
+                int currentUserId = Preferences.Get("UserId", 0);
 
                 var groupData = new Group
                 {
-                    // If CurrentGroupId is 0, SQLite will auto-generate a new ID.
-                    // If it is >0, we keep it so SQLite knows which row to update.
                     Id = CurrentGroupId,
                     Name = NewGroupName,
                     PhotoUrl = SelectedPhotoPath,
                     StatusText = "Active",
                     StatusColor = "#2ECC71",
-                    NotificationCount = 0
+                    NotificationCount = 0,
+                    CreatorId = currentUserId // Explicitly assign the current user as owner
                 };
 
-                if (CurrentGroupId == 0)
+                if (CurrentGroupId == 0) // 0 means NEW Group
                 {
-                    // === CREATE MODE ===
                     groupService.AddGroup(groupData);
                     await Application.Current.MainPage.DisplayAlert("Sukces", "Grupa utworzona!", "OK");
                 }
                 else
                 {
-                    // === EDIT MODE ===
-                    App.GroupService.UpdateGroup(groupData);
+                    groupService.UpdateGroup(groupData);
                     await Application.Current.MainPage.DisplayAlert("Sukces", "Grupa zaktualizowana!", "OK");
                 }
 
-                // Cleanup
-                SetCreateMode(); // Reset form
-                await GetGroupsList(); // Refresh list
+                SetCreateMode();
+                await GetGroupsList(); // Refresh the list before navigating back
                 await Application.Current.MainPage.Navigation.PopAsync();
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error: {ex.Message}");
-                await Application.Current.MainPage.DisplayAlert("Błąd", "Operacja nieudana", "OK");
             }
             finally
             {

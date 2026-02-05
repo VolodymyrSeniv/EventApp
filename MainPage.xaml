@@ -11,7 +11,7 @@
     <Grid Padding="0" Margin="0">
 
         <!-- ФОН --> 
-        <Image Source="screen.png" 
+        <Image Source="background.png" 
                Aspect="AspectFill" 
              HorizontalOptions="Fill"
                VerticalOptions="Fill" />

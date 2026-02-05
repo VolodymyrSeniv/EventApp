@@ -8,7 +8,6 @@ namespace MauiAppB.Views;
 
 public partial class GroupsPage : ContentPage
 {
-    public ObservableCollection<Group> Groups { get; set; } = new();
 
     public GroupsPage(GroupListViewModel groupListViewModel)
     {
